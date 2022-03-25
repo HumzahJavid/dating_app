@@ -1,5 +1,11 @@
-from fastapi import FastAPI, APIRouter
+from fastapi import FastAPI, APIRouter, Request
+from fastapi.templating import Jinja2Templates
 from pathlib import Path
+
+
+BASE_PATH = Path(__file__).resolve().parent
+templates = Jinja2Templates(directory=BASE_PATH / "templates")
+
 
 app = FastAPI()
 api_router = APIRouter()
@@ -12,8 +18,10 @@ async def root() -> None:
 
 
 @api_router.get("/items/{item_id}")
-async def read_item(item_id: int):
-    return {"item_id": item_id}
+async def read_item(request: Request, item_id: int) -> dict:
+    return templates.TemplateResponse(
+        "index.html", {"request": request, "item_id": item_id}
+    )
 
 
 app.include_router(api_router)
