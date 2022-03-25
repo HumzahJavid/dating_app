@@ -1,5 +1,6 @@
 from fastapi import FastAPI, APIRouter, Request
 from fastapi.templating import Jinja2Templates
+from fastapi.staticfiles import StaticFiles
 from pathlib import Path
 
 
@@ -8,6 +9,7 @@ templates = Jinja2Templates(directory=BASE_PATH / "templates")
 
 
 app = FastAPI()
+app.mount("/static", StaticFiles(directory=BASE_PATH / "static"), name="static")
 api_router = APIRouter()
 
 
