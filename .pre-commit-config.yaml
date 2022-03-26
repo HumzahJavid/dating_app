@@ -32,3 +32,10 @@ repos:
       rev: 3.9.2
       hooks:
         - id: flake8
+    - repo: https://github.com/stfc/pre-commit-hooks
+      rev: v0.3.1
+      hooks:
+        - id: check-missing-requirements
+        # issues with mypy not fixing import error for uvicorn
+        # - id: check-mypy-import-errors
+        - id: check-pylint-import-errors

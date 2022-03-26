@@ -13,6 +13,8 @@ Jinja2 = "^3.0.3"
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
 pre-commit = "^2.17.0"
+hooks = {git = "https://github.com/stfc/pre-commit-hooks", tag = "v0.3.0"}
+pylint = "^2.13.1"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
