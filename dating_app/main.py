@@ -22,7 +22,7 @@ async def root() -> None:
 @api_router.get("/items/{item_id}")
 async def read_item(request: Request, item_id: int) -> dict:
     return templates.TemplateResponse(
-        "index.html", {"request": request, "item_id": item_id}
+        "items.html", {"request": request, "item_id": item_id}
     )
 
 
