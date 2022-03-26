@@ -15,8 +15,8 @@ api_router = APIRouter()
 
 # @app.get("/")
 @api_router.get("/", status_code=200)
-async def root() -> None:
-    return {"message": "Hello World"}
+async def root(request: Request) -> dict:
+    return templates.TemplateResponse("index.html", {"request": request})
 
 
 @api_router.get("/items/{item_id}")
