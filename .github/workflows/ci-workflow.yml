@@ -49,3 +49,51 @@ jobs:
           poetry run flake8 dating_app  # basic linting
           poetry run pylint --errors-only dating_app  # advanced linting
           poetry run mypy dating_app  # static type checking for type hints
+
+  lint_report:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+      #----------------------------------------------
+      #  -----         Setup python          -----
+      #----------------------------------------------
+      - name: Set up python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      #----------------------------------------------
+      #  -----  Access cache (if exists)      -----
+      #----------------------------------------------
+      - name: Cache pypoetry venv
+        id: cached-poetry-dependencies
+        uses: actions/cache@v2
+        env:
+          cache-name: cached-poetry-dependencies
+        with:
+          path: |
+            ~/.cache/pypoetry
+            .venv
+          key: ${{ runner.os }}-${{ env.cache-name }}
+          restore-keys: |
+            {{ runner.os }}-${{ env.cache-name }}
+      #----------------------------------------------
+      #  -----  Install & configure poetry  -----
+      #----------------------------------------------
+      - name: Install Poetry
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 -
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+          poetry --version
+      - name: Install requirements
+        run: |
+          poetry install -vvv
+      #----------------------------------------------
+      #  -----  The command to run   -----
+      #----------------------------------------------
+      - name: lint report
+        run: |
+          poetry run pylint -ry --exit-zero dating_app
+      - name: lint coverage tox
+        run: |
+          poetry run tox -e coverage-reports, coverage-linting
