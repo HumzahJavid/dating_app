@@ -13,7 +13,7 @@ warn_return_any = true
 warn_unused_configs = true
 warn_redundant_casts = true
 [[tool.mypy.overrides]]
-module = [ "uvicorn" ]
+module = [ "uvicorn", "requests",]
 ignore_missing_imports = true
 
 [tool.isort]
@@ -42,6 +42,7 @@ pytest = "^7.1.1"
 regex = "^2021.11.10"
 tox = "^3.24.5"
 colorama = "^0.4.4"
+requests = "^2.27.1"
 pytest-env = "^0.6.2"
 flake8-formatter-junit-xml = "^0.0.6"
 pytest-cov = "^3.0.0"
