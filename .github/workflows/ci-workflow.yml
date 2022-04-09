@@ -37,3 +37,40 @@ jobs:
       - name: Verify poetry install
         run: |
           poetry --version
+
+
+  lint:
+    runs-on: ubuntu-latest
+    needs: [test]
+    steps:
+      - name: Cache
+        uses: actions/cache@v2
+        id: cached-poetry-dependencies
+        with:
+          path: |
+            ~/.cache/pypoetry
+            .venv/
+          key: ${{ runner.os }}-${{ env.cache-name }}
+          restore-keys: |
+            {{ runner.os }}-${{ env.cache-name }}
+      - name: Install Poetry
+        run: |
+          curl -sSL https://install.python-poetry.org | python3 -
+          echo "$HOME/.local/bin" >> $GITHUB_PATH
+          poetry --version
+
+      - name: Validation poetry is accessible
+        run: |
+          poetry --version
+      - name: Check out repository
+        uses: actions/checkout@v2
+      - name: Lint (install poetry requirements)
+        run: |
+          poetry install -vvv
+      - name: Lint
+        run: |
+          poetry run isort --check dating_app  # import sorting
+          poetry run black --check --diff dating_app  # style checking
+          poetry run flake8 dating_app  # basic linting
+          poetry run pylint --errors-only dating_app  # advanced linting
+          poetry run mypy dating_app  # static type checking for type hints
