@@ -11,7 +11,10 @@ uvicorn = {extras = ["standard"], version = "^0.17.6"}
 Jinja2 = "^3.0.3"
 
 [tool.poetry.dev-dependencies]
+pylint = "^2.13.3"
+hooks = {git = "https://github.com/stfc/pre-commit-hooks", tag = "v0.3.0"}
 pytest = "^5.2"
+pre-commit = "^2.18.1"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
