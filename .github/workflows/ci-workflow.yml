@@ -1,34 +1,47 @@
 name: CI-CD workflow
 on: [push]
 jobs:
-
   lint:
     runs-on: ubuntu-latest
     steps:
-      - name: Cache
-        uses: actions/cache@v2
+      - name: Check out repository
+        uses: actions/checkout@v2
+      #----------------------------------------------
+      #  -----         Setup python          -----
+      #----------------------------------------------
+      - name: Set up python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      #----------------------------------------------
+      #  -----  Access cache (if exists)      -----
+      #----------------------------------------------
+      - name: Cache pypoetry venv
         id: cached-poetry-dependencies
+        uses: actions/cache@v2
+        env:
+          cache-name: cached-poetry-dependencies
         with:
           path: |
             ~/.cache/pypoetry
-            .venv/
+            .venv
           key: ${{ runner.os }}-${{ env.cache-name }}
           restore-keys: |
             {{ runner.os }}-${{ env.cache-name }}
+      #----------------------------------------------
+      #  -----  Install & configure poetry  -----
+      #----------------------------------------------
       - name: Install Poetry
         run: |
           curl -sSL https://install.python-poetry.org | python3 -
           echo "$HOME/.local/bin" >> $GITHUB_PATH
           poetry --version
-
-      - name: Validation poetry is accessible
-        run: |
-          poetry --version
-      - name: Check out repository
-        uses: actions/checkout@v2
-      - name: Lint (install poetry requirements)
+      - name: Install requirements
         run: |
           poetry install -vvv
+      #----------------------------------------------
+      #  -----  The command to run   -----
+      #----------------------------------------------
       - name: Lint
         run: |
           poetry run isort --check dating_app  # import sorting
