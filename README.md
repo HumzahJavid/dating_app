@@ -1,5 +1,6 @@
 # dating_app
 # Badges
+![ci-workflow](https://github.com/HumzahJavid/dating_app/actions/workflows/ci-workflow.yml/badge.svg)
 
 
 ## Development setup
