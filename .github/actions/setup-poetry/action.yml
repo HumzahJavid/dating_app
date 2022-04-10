@@ -1,0 +1,46 @@
+name: "setup-poetry"
+description: "A composite action to import poetry and setup a cache"
+
+runs:
+  using: "composite"
+  steps:
+    #----------------------------------------------
+    #  -----         Setup python          -----
+    #----------------------------------------------
+    - name: Set up python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+    #----------------------------------------------
+    #  -----  Access cache (if exists)      -----
+    #----------------------------------------------
+    - name: Cache pypoetry venv
+      id: cached-poetry-dependencies
+      uses: actions/cache@v2
+      env:
+        cache-name: cached-poetry-dependencies
+      with:
+        path: |
+          ~/.cache/pypoetry
+          .venv
+        key: ${{ runner.os }}-${{ env.cache-name }}
+        restore-keys: |
+          {{ runner.os }}-${{ env.cache-name }}
+    #----------------------------------------------
+    #  -----  Install & configure poetry  -----
+    #----------------------------------------------
+    - name: Install Poetry
+      run: |
+        curl -sSL https://install.python-poetry.org | python3 -
+        echo "$HOME/.local/bin" >> $GITHUB_PATH
+        poetry --version
+      # run commands in composite action require shell
+      shell: bash
+    - name: check packages
+      run: |
+        poetry show
+      shell: bash
+    - name: Install requirements
+      run: |
+        poetry install -vvv
+      shell: bash
