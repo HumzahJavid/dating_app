@@ -3,6 +3,7 @@
 ![ci-workflow](https://github.com/HumzahJavid/dating_app/actions/workflows/ci-workflow.yml/badge.svg)
 ![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)
 
+![pylint rating](build/badges/rating.svg)
 
 ## Development setup
 Poetry is used as the virtual env/ package manager
