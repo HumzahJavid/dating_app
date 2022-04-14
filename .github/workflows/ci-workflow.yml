@@ -78,4 +78,4 @@ jobs:
       - name: create-badges
         run: |
           cd badges
-          poetry run python badges/create_readme_badges.py
+          poetry run python create_readme_badges.py
