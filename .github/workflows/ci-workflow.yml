@@ -69,14 +69,22 @@ jobs:
           path: build/reports/pylint_score.txt
           retention-days: 5
 
-      - name: Set the value
-        id: step_one
-        run: |
-          echo "pylint_score=5/10" >> $GITHUB_ENV
-      - name: Use the value
-        id: step_two
-        run: |
-          echo "${{ env.pylint_score }}" # This will output '5/10'
+          # This method only works within the same job
+          # - name: Set the value
+          #   id: step_one
+          #   run: |
+          #     echo "pylint_score=5/10" >> $GITHUB_ENV
+
+          # - name: Use the value
+          #   id: step_two
+          #   run: |
+          #     echo "${{ env.pylint_score }}" # This will output '5/10'
+
+          # alternative approach use outputs https://stackoverflow.com/questions/59175332/using-output-from-a-previous-job-in-a-new-one-in-a-github-action/61236803#61236803
+          # https://stackoverflow.com/questions/70326569/github-workflow-how-to-conditionally-setup-env-for-all-subsequent-jobs
+          # Map a step output to a job output
+          # outputs:
+          #   output1: ${{ steps.step1.outputs.test }}
 
   update_badges:
     runs-on: ubuntu-latest
