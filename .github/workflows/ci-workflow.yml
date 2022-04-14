@@ -116,8 +116,8 @@ jobs:
 
       - name: extract-pylint-score-report
         run: |
-          sed -n 's/^Your code has been rated at \([-0-9.]*\)\/.*/\1/p' pylint_score.txt
+          sed -n 's/^Your code has been rated at \([-0-9.]*\)\/.*/\1/p' pylint_score.txt >> $GITHUB_ENV
       - name: create-badges
         run: |
           cd badges
-          poetry run python create_readme_badges.py
+          poetry run python create_readme_badges.py ${{ env.pylint_score }}

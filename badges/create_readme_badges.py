@@ -1,3 +1,5 @@
+import sys
+
 import anybadge
 
 build_directory = "../build/"
@@ -21,7 +23,8 @@ def get_pylint_rating(filename=report_directory + "pylint_score.txt"):
     return float(lines[-1].split("/10")[0].split(" ")[-1])
 
 
-data["rating"] = get_pylint_rating(report_directory + "pylint_score.txt")
+# data["rating"] = get_pylint_rating(report_directory + "pylint_score.txt")
+data["rating"] = sys.argv[0]
 
 
 def main():  # pylint: disable=too-many-branches,too-many-statements
