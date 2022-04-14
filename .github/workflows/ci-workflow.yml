@@ -116,7 +116,13 @@ jobs:
 
       - name: extract-pylint-score-report
         run: |
-          echo "pylint_score = sed -n 's/^Your code has been rated at \([-0-9.]*\)\/.*/\1/p' pylint_score.txt" >> $GITHUB_ENV
+          pylint_score_bash=$(sed -n 's/^Your code has been rated at \([-0-9.]*\)\/.*/\1/p' pylint_score.txt)
+          echo "pylint_score=$pylint_score_bash">> $GITHUB_ENV
+      - name: verify-pylint-score-variables
+        run: |
+          echo "temp bash variable $pylint_score_bash"
+          echo "github env variable ${{ env.pylint_score }}"
+
       - name: create-badges
         run: |
           cd badges
