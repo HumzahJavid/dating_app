@@ -69,6 +69,15 @@ jobs:
           path: build/reports/pylint_score.txt
           retention-days: 5
 
+      - name: Set the value
+        id: step_one
+        run: |
+          echo "pylint_score=5/10" >> $GITHUB_ENV
+      - name: Use the value
+        id: step_two
+        run: |
+          echo "${{ env.pylint_score }}" # This will output '5/10'
+
   update_badges:
     runs-on: ubuntu-latest
     needs: [lint_report]
@@ -87,16 +96,15 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: pylint-score-report
-
-      - name: print-pylint-score-report
+      - name: step2 (different job)
         shell: bash
         run: |
-          value = `cat build/reports/pylint_score.txt`
-          echo pylint value is $value
+          echo "${{ env.pylint_score }}" # should print 5/10
 
       - name: print-pylint-score-report-direct
+        shell: bash
         run: |
-          cat build/reports/pylint_score.txt
+          cat pylint_score.txt
 
       - name: extract-pylint-score-report
         run: |
