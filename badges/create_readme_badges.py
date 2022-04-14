@@ -24,7 +24,7 @@ def get_pylint_rating(filename=report_directory + "pylint_score.txt"):
 
 
 # data["rating"] = get_pylint_rating(report_directory + "pylint_score.txt")
-data["rating"] = float(sys.argv[0])
+data["rating"] = float(sys.argv[1])
 
 
 def main():  # pylint: disable=too-many-branches,too-many-statements
