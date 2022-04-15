@@ -118,6 +118,12 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: pylint-score-report
+
+      - name: Download artifact directory
+        uses: actions/download-artifact@v3
+        with:
+          name: report-directory
+
       - name: step2 (different job)
         shell: bash
         run: |
