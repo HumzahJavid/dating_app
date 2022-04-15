@@ -56,7 +56,88 @@ jobs:
       #----------------------------------------------
       - name: lint report
         run: |
-          poetry run pylint -ry --exit-zero dating_app
+          mkdir -p build/reports
+          poetry run pylint -ry --exit-zero dating_app | tee build/reports/pylint_score.txt
       - name: lint coverage tox
         run: |
           poetry run tox -e coverage-reports, coverage-linting
+
+      # - name: Archive code coverage results
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: pylint-score-report
+      #     path: build/reports/pylint_score.txt
+      #     retention-days: 5
+
+      - name: Build stub artifact
+        run: |
+          echo "stub" > stub_artifact.txt
+
+      # https://github.com/actions/upload-artifact/issues/174#issuecomment-934330651
+      - name: Upload build reports
+        uses: actions/upload-artifact@v3
+        with:
+          name: report-directory
+          path: |
+            ./stub_artifact.txt
+            ./build/reports/
+          retention-days: 5
+
+  update_badges:
+    runs-on: ubuntu-latest
+    needs: [lint_report]
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v2
+      #----------------------------------------------
+      #  -----         Setup poetry          -----
+      #----------------------------------------------
+      - name: Setup poetry
+        uses: ./.github/actions/setup-poetry
+      #----------------------------------------------
+      #  -----  The command to run   -----
+      #----------------------------------------------
+
+      - name: Download artifact directory
+        uses: actions/download-artifact@v3
+        with:
+          name: report-directory
+
+      # - name: extract-pylint-score-report
+      #   run: |
+      #     pylint_score_bash=$(sed -n 's/^Your code has been rated at \([-0-9.]*\)\/.*/\1/p' pylint_score.txt)
+      #     echo "pylint_score=$pylint_score_bash">> $GITHUB_ENV
+      # - name: verify-pylint-score-variables
+      #   run: |
+      #     echo "temp bash variable $pylint_score_bash"
+      #     echo "github env variable ${{ env.pylint_score }}"
+
+      # - name: create-badges
+      #   run: |
+      #     cd badges
+      #     poetry run python create_readme_badges.py ${{ env.pylint_score }}
+
+      # create badge via file
+      - name: create-badges-via-fie
+        run: |
+          cd badges
+          poetry run python create_readme_badges.py
+
+      - name: check-badge-exists
+        run: |
+          pwd
+          ls ./build/badges/
+          cat ./build/badges/rating.svg
+
+      # Push badge to another repo
+      - name: Pushes badge file
+        uses: dmnemec/copy_file_to_another_repo_action@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+        with:
+          source_file: "./build/badges/rating.svg"
+          destination_repo: "HumzahJavid/humzahjavid"
+          destination_folder: "badges"
+          destination_branch: "badges"
+          user_email: "HumzahJavid@users.noreply.github.com"
+          user_name: "HumzahJavid"
