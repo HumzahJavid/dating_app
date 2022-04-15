@@ -69,6 +69,13 @@ jobs:
           path: build/reports/pylint_score.txt
           retention-days: 5
 
+      - name: Upload build reports
+        uses: actions/upload-artifact@v3
+        with:
+          name: report-directory
+          path: build/reports/
+          retention-days: 5
+
           # This method only works within the same job
           # - name: Set the value
           #   id: step_one
