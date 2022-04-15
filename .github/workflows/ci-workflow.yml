@@ -73,7 +73,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: report-directory
-          path: ./*/build/reports/
+          path: ./build/reports/
           retention-days: 5
 
           # This method only works within the same job
