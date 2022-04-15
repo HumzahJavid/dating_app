@@ -135,7 +135,7 @@ jobs:
         env:
           API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
         with:
-          source_file: "./build/badges/rating.svg"
+          source_file: "./build/badges/"
           destination_repo: "HumzahJavid/humzahjavid"
           destination_folder: "badges"
           destination_branch: "badges"
