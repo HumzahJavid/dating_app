@@ -23,8 +23,10 @@ def get_pylint_rating(filename=report_directory + "pylint_score.txt"):
     return float(lines[-1].split("/10")[0].split(" ")[-1])
 
 
-# data["rating"] = get_pylint_rating(report_directory + "pylint_score.txt")
-data["rating"] = float(sys.argv[1])
+if len(sys.argv) > 1:
+    data["rating"] = float(sys.argv[1])
+else:
+    data["rating"] = get_pylint_rating(report_directory + "pylint_score.txt")
 
 
 def main():  # pylint: disable=too-many-branches,too-many-statements
