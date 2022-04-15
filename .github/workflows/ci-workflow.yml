@@ -136,6 +136,12 @@ jobs:
         run: |
           echo "temp bash variable $pylint_score_bash"
           echo "github env variable ${{ env.pylint_score }}"
+      # check badge exists before running new badge create
+      - name: check-badge-exists
+        run: |
+          pwd
+          ls ./build/badges/
+          cat ./build/badges/rating.svg
 
       # create badge via file (instead of sys var)
       - name: create-badges-via-fie
