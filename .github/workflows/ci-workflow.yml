@@ -141,3 +141,9 @@ jobs:
         run: |
           cd badges
           poetry run python create_readme_badges.py ${{ env.pylint_score }}
+
+      - name: check-badge-exists
+        run: |
+          pwd
+          ls ./build/badges/
+          cat ./build/badges/rating.svg
