@@ -147,3 +147,15 @@ jobs:
           pwd
           ls ./build/badges/
           cat ./build/badges/rating.svg
+      # Push badge to another repo
+      - name: Pushes badge file
+        uses: dmnemec/copy_file_to_another_repo_action@main
+        env:
+          API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
+        with:
+          source_file: "./build/badges/rating.svg"
+          destination_repo: "HumzahJavid/humzahjavid"
+          destination_folder: "badges"
+          destination_branch: "badges"
+          user_email: "HumzahJavid@users.noreply.github.com"
+          user_name: "HumzahJavid"
