@@ -73,23 +73,40 @@
     <div class="ui tiny modal">
         <div class="ui middle aligned center aligned grid">
             <div class="column">
-                <div class="ui segment">
-                    <div class="field">
-                        <div class="ui left icon input">
-                            <i class="user icon"></i>
-                            <input type="text" name="email" placeholder="E-mail address">
-                        </div>
+                <h2 class="ui image header">
+                    <!-- <div class="ui placeholder">
+                        <div class="image"></div>
+                    </div> -->
+                    <!-- smaller size of icon -->
+                    <i class="icons">
+                        <i class="large heart outline icon brand"></i> <i
+                            class="vertically flipped small brand fire icon"></i>
+                    </i>
+                    <div class="brand content">
+                        Log-in to your account
                     </div>
-                    <div class="field">
-                        <div class="ui left icon input">
-                            <i class="lock icon"></i>
-                            <input type="password" name="password" placeholder="Password">
+                </h2>
+                <form class="ui large form">
+                    <div class="ui  segment">
+                        <div class="field">
+                            <div class="ui left icon input">
+                                <i class="user icon"></i>
+                                <input type="text" name="email" placeholder="E-mail address">
+                            </div>
                         </div>
+                        <div class="field">
+                            <div class="ui left icon input">
+                                <i class="lock icon"></i>
+                                <input type="password" name="password" placeholder="Password">
+                            </div>
+                        </div>
+                        <!-- cant set brand colour -->
+                        <div class="brand ui fluid large primary submit button">Login</div>
                     </div>
+                </form>
 
-                    <div class="center aligned actions">
-                        <div class="ui large primary teal submit button center">Login</div>
-                    </div>
+                <div class="ui message">
+                    New to us? <a href="#">Sign Up</a>
                 </div>
             </div>
         </div>
