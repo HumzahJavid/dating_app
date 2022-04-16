@@ -358,6 +358,126 @@ def main():  # pylint: disable=too-many-branches,too-many-statements
     # Write badge
     badge.write_badge(badge_directory + "lint_total.svg", overwrite=True)
 
+    #################################################################
+    # TESTS
+    # ERRORS ========================================================
+    # Extract metric
+    label = "tests errors"
+    metric = data["tests"]["errors"]
+    value = metric
+
+    # set colour
+    if metric == "unknown":
+        value = "unknown"
+        color = "#FF00FF"
+    elif metric == 0:
+        color = "green"
+    elif metric > 0:
+        color = "yellow"
+    else:
+        # Undefined Metric
+        color = "#FF00FF"
+
+    # Create badge
+    badge = anybadge.Badge(
+        label=label,
+        value=value,
+        default_color=color,
+        value_prefix=" ",
+        value_suffix=" ",
+    )
+
+    # Write badge
+    badge.write_badge(badge_directory + "tests_errors.svg", overwrite=True)
+
+    # FAILURES =======================================================
+    # Extract metric
+    label = "tests failures"
+    metric = data["tests"]["failures"]
+    value = metric
+
+    # set colour
+    if metric == "unknown":
+        value = "unknown"
+        color = "#FF00FF"
+    elif metric == 0:
+        color = "green"
+    elif metric > 0:
+        color = "red"
+    else:
+        # Undefined Metric
+        color = "#FF00FF"
+
+    # Create badge
+    badge = anybadge.Badge(
+        label=label,
+        value=value,
+        default_color=color,
+        value_prefix=" ",
+        value_suffix=" ",
+    )
+
+    # Write badge
+    badge.write_badge(badge_directory + "tests_failures.svg", overwrite=True)
+
+    # SKIPPED ==========================================================
+    # Extract metric
+    label = "tests skipped"
+    metric = data["tests"]["skipped"]
+    value = metric
+
+    # set colour
+    if metric == "unknown":
+        value = "unknown"
+        color = "#FF00FF"
+    elif metric == 0:
+        color = "green"
+    elif metric > 0:
+        color = "yellow"
+    else:
+        # Undefined Metric
+        color = "#FF00FF"
+
+    # Create badge
+    badge = anybadge.Badge(
+        label=label,
+        value=value,
+        default_color=color,
+        value_prefix=" ",
+        value_suffix=" ",
+    )
+
+    # Write badge
+    badge.write_badge(badge_directory + "tests_skipped.svg", overwrite=True)
+
+    # TOTAL =========================================================
+    # Extract metric
+    label = "tests total"
+    metric = data["tests"]["total"]
+    value = metric
+
+    # set colour
+    if metric == "unknown":
+        value = "unknown"
+        color = "#FF00FF"
+    elif metric > 0:
+        color = "lightgrey"
+    else:
+        # Undefined Metric
+        color = "#FF00FF"
+
+    # Create badge
+    badge = anybadge.Badge(
+        label=label,
+        value=value,
+        default_color=color,
+        value_prefix=" ",
+        value_suffix=" ",
+    )
+
+    # Write badge
+    badge.write_badge(badge_directory + "tests_total.svg", overwrite=True)
+
 
 if __name__ == "__main__":
     main()
