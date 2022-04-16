@@ -60,7 +60,7 @@ jobs:
           poetry run pylint -ry --exit-zero dating_app | tee build/reports/pylint_score.txt
       - name: lint coverage tox
         run: |
-          poetry run tox -e coverage-reports,coverage-linting
+          poetry run tox -e coverage-reports,coverage-linting,test-reports
 
       # - name: Archive code coverage results
       #   uses: actions/upload-artifact@v3
