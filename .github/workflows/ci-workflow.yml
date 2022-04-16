@@ -135,7 +135,7 @@ jobs:
         env:
           API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
         with:
-          source_file: --exclude './build/badges/.gitkeep' "./build/badges/"
+          source_file: "./build/badges/"
           destination_repo: "HumzahJavid/humzahjavid"
           destination_branch: "temp"
           user_email: "HumzahJavid@users.noreply.github.com"
