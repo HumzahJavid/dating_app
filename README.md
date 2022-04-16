@@ -8,6 +8,7 @@
 <!-- hosting on heroku (untested storage time)-->
 <!-- ![pylint heroku ](https://heroku.herokuapp.com/badges/rating.svg) -->
 ![pylint-rating](https://raw.githubusercontent.com/HumzahJavid/humzahjavid/badges/badges/rating.svg)
+![coverage](https://raw.githubusercontent.com/HumzahJavid/humzahjavid/badges/badges/coverage.svg)
 
 ## Development setup
 Poetry is used as the virtual env/ package manager
