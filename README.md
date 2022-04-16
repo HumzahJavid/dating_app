@@ -14,6 +14,11 @@
 ![lint_failures](https://raw.githubusercontent.com/HumzahJavid/humzahjavid/badges/badges/lint_failures.svg)
 ![lint_total](https://raw.githubusercontent.com/HumzahJavid/humzahjavid/badges/badges/lint_total.svg)
 
+![tests_errors](https://raw.githubusercontent.com/HumzahJavid/humzahjavid/badges/badges/tests_errors.svg)
+![tests_failures](https://raw.githubusercontent.com/HumzahJavid/humzahjavid/badges/badges/tests_failures.svg)
+![tests_skipped](https://raw.githubusercontent.com/HumzahJavid/humzahjavid/badges/badges/tests_skipped.svg)
+![tests_total](https://raw.githubusercontent.com/HumzahJavid/humzahjavid/badges/badges/tests_total.svg)
+
 ## Development setup
 Poetry is used as the virtual env/ package manager
 
