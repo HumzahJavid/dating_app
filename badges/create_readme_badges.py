@@ -63,14 +63,116 @@ def parse_coverage(filename):
     return cov_percent
 
 
-# Parse coverage report
-coverage = parse_coverage(report_directory + "code-coverage.xml")
-data["coverage"] = coverage
+def parse_junit_tree(element, test_summary=None):
+    """Recursively parse and extract a summary of a JUnit xml element tree.
 
+    Args:
+        element (xml.etree.Element): XML Element
+        test_summary (dict): Summary of the JUnit XML report
+
+    Returns:
+        dict: Summary of Junit results.
+
+    Notes:
+        For JUnit XML schema see:
+            <https://github.com/windyroad/JUnit-Schema>
+    """
+    # Create default entries in the stats dictionary if required.
+    if not test_summary:
+        test_summary = dict(
+            testsuites=dict(tests=0, failures=0),
+            testsuite=dict(tests=0, failures=0, skipped=0, errors=0),
+            testcase=dict(tests=0, failures=0, skipped=0, errors=0),
+        )
+
+    # Parse top level <testsuites> or <testsuite> tags.
+    if element.tag in ["testsuites", "testsuite"]:
+
+        for attr in test_summary[element.tag]:
+            test_summary[element.tag][attr] += int(element.get(attr, 0))
+
+        for child in element:
+            parse_junit_tree(child, test_summary)
+
+    # Parse <testcase> tag. This is a child of testsuite.
+    if element.tag == "testcase":
+        key = "testcase"
+
+        # Incrememnt test case counter.
+        test_summary[key]["tests"] += 1
+
+        # Parse child <error>, <skipped>, <failure> tags.
+        for child in element:
+            parse_junit_tree(child, test_summary)
+
+    # Parse <error>, <skipped>, and <failure> tags. Children of testcase.
+    if element.tag in ["error", "skipped", "failure"]:
+        key = element.tag
+        if element.tag == "error":
+            key = "errors"
+        elif element.tag == "failure":
+            key = "failures"
+        test_summary["testcase"][key] += 1
+
+    # Parse <system-out>, <system-err>, and <properties> tags.
+    # Children of testsuite.
+    if element.tag in ["system-out", "system-err", "properties"]:
+        pass
+
+    return test_summary
+
+
+def count_junit_metrics(filename):
+    """Collect metrics from a JUnit XML file.
+
+    Used to parse unit tests and linting results.
+
+    Args:
+        filename (str): Filename path of JUnit file
+
+    Returns:
+        dict: Summary of Unit test or linting results
+
+    """
+    try:
+        root_elem = etree.parse(filename).getroot()
+        if root_elem.tag not in ["testsuites", "testsuite"]:
+            raise ValueError("Invalid JUnit XML file.")
+        stats = parse_junit_tree(root_elem)
+        result = dict(errors=0, failures=0, tests=0, skipped=0)
+        for key in result:
+            if key in ["tests", "failures"]:
+                result[key] = max(
+                    stats["testsuites"][key],
+                    stats["testsuite"][key],
+                    stats["testcase"][key],
+                )
+            else:
+                result[key] = max(stats["testsuite"][key], stats["testcase"][key])
+        result["total"] = result["tests"]
+        del result["tests"]
+    except (FileNotFoundError, etree.ParseError, ValueError) as expt:
+        print(
+            "Exception parsing '%s', returning empty results..: %s",
+            filename,
+            expt,
+        )
+        result = dict(errors="unknown", failures="unknown", total="unknown", skipped=0)
+
+    return result
+
+
+# Parse pylint rating
 if len(sys.argv) > 1:
     data["rating"] = float(sys.argv[1])
 else:
     data["rating"] = get_pylint_rating(report_directory + "pylint_score.txt")
+
+# Parse coverage report
+data["coverage"] = parse_coverage(report_directory + "code-coverage.xml")
+
+# Parse JUnit XML linting report
+data["lint"] = count_junit_metrics(report_directory + "linting.xml")
 
 
 def main():  # pylint: disable=too-many-branches,too-many-statements
