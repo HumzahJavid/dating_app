@@ -137,6 +137,6 @@ jobs:
         with:
           source_file: "./build/badges/"
           destination_repo: "HumzahJavid/humzahjavid"
-          destination_branch: "temp"
+          destination_branch: "badges"
           user_email: "HumzahJavid@users.noreply.github.com"
           user_name: "HumzahJavid"
