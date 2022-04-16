@@ -174,6 +174,9 @@ data["coverage"] = parse_coverage(report_directory + "code-coverage.xml")
 # Parse JUnit XML linting report
 data["lint"] = count_junit_metrics(report_directory + "linting.xml")
 
+# Parse JUnit unit XML tests report
+data["tests"] = count_junit_metrics(report_directory + "unit-tests.xml")
+
 
 def main():  # pylint: disable=too-many-branches,too-many-statements
     #################################################################
