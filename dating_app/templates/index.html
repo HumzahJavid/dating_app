@@ -62,9 +62,34 @@
                             <div class="item">Vietnamese</div>
                         </div>
                     </div>
-                    <a class="ui item">
+                    <a class="ui item" id="loginButton">
                         Login
                     </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ui tiny modal">
+        <div class="ui middle aligned center aligned grid">
+            <div class="column">
+                <div class="ui segment">
+                    <div class="field">
+                        <div class="ui left icon input">
+                            <i class="user icon"></i>
+                            <input type="text" name="email" placeholder="E-mail address">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="ui left icon input">
+                            <i class="lock icon"></i>
+                            <input type="password" name="password" placeholder="Password">
+                        </div>
+                    </div>
+
+                    <div class="center aligned actions">
+                        <div class="ui large primary teal submit button center">Login</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -74,6 +99,14 @@
         $('.ui.dropdown')
             .dropdown()
             ;
+        $(document).on('click', '#loginButton', function () {
+            $('.ui.tiny.modal')
+                .modal({
+                    blurring: true
+                })
+                .modal('setting', 'transition', "scale")
+                .modal('show')
+        });
     </script>
 
 </body>
