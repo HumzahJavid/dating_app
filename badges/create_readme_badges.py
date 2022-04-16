@@ -265,6 +265,96 @@ def main():  # pylint: disable=too-many-branches,too-many-statements
     # Write badge
     badge.write_badge(badge_directory + "coverage.svg", overwrite=True)
 
+    ###############################################################
+    # LINT
+    # ERRORS ======================================================
+    # Extract metric
+    label = "lint errors"
+    metric = data["lint"]["errors"]
+    value = metric
+
+    # set colour
+    if metric == "unknown":
+        value = "unknown"
+        color = "#FF00FF"
+    elif metric == 0:
+        color = "green"
+    elif metric > 0:
+        color = "yellow"
+    else:
+        # Undefined Metric
+        color = "#FF00FF"
+
+    # Create badge
+    badge = anybadge.Badge(
+        label=label,
+        value=value,
+        default_color=color,
+        value_prefix=" ",
+        value_suffix=" ",
+    )
+
+    # Write badge
+    badge.write_badge(badge_directory + "lint_errors.svg", overwrite=True)
+
+    # FAILURES ===================================================
+    # Extract metric
+    label = "lint failures"
+    metric = data["lint"]["failures"]
+    value = metric
+
+    # set colour
+    if metric == "unknown":
+        value = "unknown"
+        color = "#FF00FF"
+    elif metric == 0:
+        color = "green"
+    elif metric > 0:
+        color = "red"
+    else:
+        # Undefined Metric
+        color = "#FF00FF"
+
+    # Create badge
+    badge = anybadge.Badge(
+        label=label,
+        value=value,
+        default_color=color,
+        value_prefix=" ",
+        value_suffix=" ",
+    )
+
+    # Write badge
+    badge.write_badge(badge_directory + "lint_failures.svg", overwrite=True)
+
+    # TOTAL ========================================================
+    # Extract metric
+    label = "lint tests"
+    metric = data["lint"]["total"]
+    value = metric
+
+    # set colour
+    if metric == "unknown":
+        value = "unknown"
+        color = "#FF00FF"
+    elif metric > 0:
+        color = "lightgrey"
+    else:
+        # Undefined Metric
+        color = "#FF00FF"
+
+    # Create badge
+    badge = anybadge.Badge(
+        label=label,
+        value=value,
+        default_color=color,
+        value_prefix=" ",
+        value_suffix=" ",
+    )
+
+    # Write badge
+    badge.write_badge(badge_directory + "lint_total.svg", overwrite=True)
+
 
 if __name__ == "__main__":
     main()
