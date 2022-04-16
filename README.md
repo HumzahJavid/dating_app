@@ -10,6 +10,10 @@
 ![pylint-rating](https://raw.githubusercontent.com/HumzahJavid/humzahjavid/badges/badges/rating.svg)
 ![coverage](https://raw.githubusercontent.com/HumzahJavid/humzahjavid/badges/badges/coverage.svg)
 
+![lint_errors](https://raw.githubusercontent.com/HumzahJavid/humzahjavid/badges/badges/lint_errors.svg)
+![lint_failures](https://raw.githubusercontent.com/HumzahJavid/humzahjavid/badges/badges/lint_failures.svg)
+![lint_total](https://raw.githubusercontent.com/HumzahJavid/humzahjavid/badges/badges/lint_total.svg)
+
 ## Development setup
 Poetry is used as the virtual env/ package manager
 
