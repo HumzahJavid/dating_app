@@ -118,6 +118,46 @@
         </div>
     </div>
 
+    <!-- registration modal -->
+    <div class="ui tiny modal" id="registrationModal">
+        <div class="ui middle aligned center aligned grid">
+            <div class="column">
+                <h2 class="ui image header">
+                    <i class="icons">
+                        <i class="large heart outline icon brand"></i> <i
+                            class="vertically flipped small brand fire icon"></i>
+                    </i>
+                    <div class="brand content">
+                        Register an account
+                    </div>
+                </h2>
+                <form class="ui form" id="registrationForm">
+                    <div class="ui segment">
+                        <div class="field">
+                            <div class="ui left icon input">
+                                <i class="user icon"></i>
+                                <input type="text" name="email" placeholder="E-mail address">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui left icon input">
+                                <i class="lock icon"></i>
+                                <input type="password" name="password" placeholder="Password">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui left icon input">
+                                <i class="lock icon"></i>
+                                <input type="password" name="confirmPassword" placeholder="Confirm Password">
+                            </div>
+                        </div>
+                        <div class="brand ui fluid large primary submit button">Register</div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <script>
         $('.ui.dropdown')
             .dropdown()
