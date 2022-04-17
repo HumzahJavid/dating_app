@@ -153,6 +153,7 @@
                         </div>
                         <div class="brand ui fluid large primary submit button">Register</div>
                     </div>
+                    <div class="ui error message"></div>
                 </form>
             </div>
         </div>
@@ -187,6 +188,20 @@
                 }
             });
 
+        $('#registrationForm')
+            .form({
+                fields: {
+                    match: {
+                        identifier: 'confirmPassword',
+                        rules: [
+                            {
+                                type: 'match[password]',
+                                prompt: 'Please ensure the passwords match'
+                            }
+                        ]
+                    }
+                }
+            });
         $('#registrationForm .submit.button')
             .api({
                 url: '/register',
