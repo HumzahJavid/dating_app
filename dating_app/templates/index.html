@@ -184,6 +184,7 @@
                 onResponse: function (response) {
                     console.log("RESPONSE = ");
                     console.log(response);
+                    $('#loginModal').modal('hide')
                     return response
                 }
             });
@@ -213,6 +214,7 @@
                 onResponse: function (response) {
                     console.log("RESPONSE = ");
                     console.log(response);
+                    $('#registrationModal').modal('hide')
                     return response
                 }
             });
