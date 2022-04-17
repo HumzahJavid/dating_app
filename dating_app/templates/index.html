@@ -3,7 +3,7 @@
 <html>
 
 <head>
-    <title>Item Details</title>
+    <title>Dating App</title>
     <!-- static files -->
     <link rel=icon type="image/x-icon" href="{{ url_for('static', path='/favicon.ico') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', path='/brand.css') }}">
@@ -74,7 +74,8 @@
         </div>
     </div>
 
-    <div class="ui tiny modal">
+    <!-- login modal -->
+    <div class="ui tiny modal" id="loginModal">
         <div class="ui middle aligned center aligned grid">
             <div class="column">
                 <h2 class="ui image header">
@@ -110,9 +111,50 @@
                     </div>
                 </form>
 
-                <div class="ui message">
+                <div class="ui message" id="registrationLink">
                     New to us? <a href="#">Sign Up</a>
                 </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- registration modal -->
+    <div class="ui tiny modal" id="registrationModal">
+        <div class="ui middle aligned center aligned grid">
+            <div class="column">
+                <h2 class="ui image header">
+                    <i class="icons">
+                        <i class="large heart outline icon brand"></i> <i
+                            class="vertically flipped small brand fire icon"></i>
+                    </i>
+                    <div class="brand content">
+                        Register an account
+                    </div>
+                </h2>
+                <form class="ui form" id="registrationForm">
+                    <div class="ui segment">
+                        <div class="field">
+                            <div class="ui left icon input">
+                                <i class="user icon"></i>
+                                <input type="text" name="email" placeholder="E-mail address">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui left icon input">
+                                <i class="lock icon"></i>
+                                <input type="password" name="password" placeholder="Password">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui left icon input">
+                                <i class="lock icon"></i>
+                                <input type="password" name="confirmPassword" placeholder="Confirm Password">
+                            </div>
+                        </div>
+                        <div class="brand ui fluid large primary submit button">Register</div>
+                    </div>
+                    <div class="ui error message"></div>
+                </form>
             </div>
         </div>
     </div>
@@ -122,7 +164,7 @@
             .dropdown()
             ;
         $(document).on('click', '#loginButton', function () {
-            $('.ui.tiny.modal')
+            $('#loginModal')
                 .modal({
                     blurring: true
                 })
@@ -142,9 +184,49 @@
                 onResponse: function (response) {
                     console.log("RESPONSE = ");
                     console.log(response);
+                    $('#loginModal').modal('hide')
                     return response
                 }
             });
+
+        $('#registrationForm')
+            .form({
+                fields: {
+                    match: {
+                        identifier: 'confirmPassword',
+                        rules: [
+                            {
+                                type: 'match[password]',
+                                prompt: 'Please ensure the passwords match'
+                            }
+                        ]
+                    }
+                }
+            })
+            .api({
+                url: '/register',
+                method: 'POST',
+                serializeForm: true,
+                beforeSend: function (settings) {
+                    console.log(settings)
+                    return settings
+                },
+                onResponse: function (response) {
+                    console.log("RESPONSE = ");
+                    console.log(response);
+                    $('#registrationModal').modal('hide')
+                    return response
+                }
+            });
+
+        $(document).on('click', '#registrationLink', function () {
+            $('#registrationModal')
+                .modal({
+                    blurring: true
+                })
+                .modal('setting', 'transition', "scale")
+                .modal('show')
+        });
     </script>
 
 </body>
