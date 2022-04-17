@@ -186,6 +186,31 @@
                     return response
                 }
             });
+
+        $('#registrationForm .submit.button')
+            .api({
+                url: '/register',
+                method: 'POST',
+                serializeForm: true,
+                beforeSend: function (settings) {
+                    console.log(settings)
+                    return settings
+                },
+                onResponse: function (response) {
+                    console.log("RESPONSE = ");
+                    console.log(response);
+                    return response
+                }
+            });
+
+        $(document).on('click', '#registrationLink', function () {
+            $('#registrationModal')
+                .modal({
+                    blurring: true
+                })
+                .modal('setting', 'transition', "scale")
+                .modal('show')
+        });
     </script>
 
 </body>
