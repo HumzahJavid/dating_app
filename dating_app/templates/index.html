@@ -3,7 +3,7 @@
 <html>
 
 <head>
-    <title>Item Details</title>
+    <title>Dating App</title>
     <!-- static files -->
     <link rel=icon type="image/x-icon" href="{{ url_for('static', path='/favicon.ico') }}">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', path='/brand.css') }}">
@@ -74,7 +74,8 @@
         </div>
     </div>
 
-    <div class="ui tiny modal">
+    <!-- login modal -->
+    <div class="ui tiny modal" id="loginModal">
         <div class="ui middle aligned center aligned grid">
             <div class="column">
                 <h2 class="ui image header">
@@ -110,7 +111,7 @@
                     </div>
                 </form>
 
-                <div class="ui message">
+                <div class="ui message" id="registrationLink">
                     New to us? <a href="#">Sign Up</a>
                 </div>
             </div>
@@ -122,7 +123,7 @@
             .dropdown()
             ;
         $(document).on('click', '#loginButton', function () {
-            $('.ui.tiny.modal')
+            $('#loginModal')
                 .modal({
                     blurring: true
                 })
