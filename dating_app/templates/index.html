@@ -12,6 +12,10 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.8/dist/semantic.min.css">
     <script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.8/dist/semantic.min.js"></script>
+    <!-- form sending / serialisation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-serialize-object/2.5.0/jquery.serialize-object.min.js"
+        integrity="sha512-Gn0tSSjkIGAkaZQWjx3Ctl/0dVJuTmjW/f9QyB302kFjU4uTNP4HtA32U2qXs/TRlEsK5CoEqMEMs7LnzLOBsA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 
 <body>
@@ -86,7 +90,8 @@
                         Log-in to your account
                     </div>
                 </h2>
-                <form class="ui large form">
+                <!-- <form class="ui form" id="loginForm" method="POST"> -->
+                <form class="ui form" id="loginForm">
                     <div class="ui  segment">
                         <div class="field">
                             <div class="ui left icon input">
@@ -124,6 +129,22 @@
                 .modal('setting', 'transition', "scale")
                 .modal('show')
         });
+
+        $('#loginForm .submit.button')
+            .api({
+                url: '/login',
+                method: 'POST',
+                serializeForm: true,
+                beforeSend: function (settings) {
+                    console.log(settings)
+                    return settings
+                },
+                onResponse: function (response) {
+                    console.log("RESPONSE = ");
+                    console.log(response);
+                    return response
+                }
+            });
     </script>
 
 </body>
