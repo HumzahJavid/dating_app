@@ -12,6 +12,10 @@
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.8/dist/semantic.min.css">
     <script src="https://cdn.jsdelivr.net/npm/fomantic-ui@2.8.8/dist/semantic.min.js"></script>
+    <!-- form sending / serialisation -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-serialize-object/2.5.0/jquery.serialize-object.min.js"
+        integrity="sha512-Gn0tSSjkIGAkaZQWjx3Ctl/0dVJuTmjW/f9QyB302kFjU4uTNP4HtA32U2qXs/TRlEsK5CoEqMEMs7LnzLOBsA=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 
 <body>
@@ -62,9 +66,52 @@
                             <div class="item">Vietnamese</div>
                         </div>
                     </div>
-                    <a class="ui item">
+                    <a class="ui item" id="loginButton">
                         Login
                     </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ui tiny modal">
+        <div class="ui middle aligned center aligned grid">
+            <div class="column">
+                <h2 class="ui image header">
+                    <!-- <div class="ui placeholder">
+                        <div class="image"></div>
+                    </div> -->
+                    <!-- smaller size of icon -->
+                    <i class="icons">
+                        <i class="large heart outline icon brand"></i> <i
+                            class="vertically flipped small brand fire icon"></i>
+                    </i>
+                    <div class="brand content">
+                        Log-in to your account
+                    </div>
+                </h2>
+                <!-- <form class="ui form" id="loginForm" method="POST"> -->
+                <form class="ui form" id="loginForm">
+                    <div class="ui  segment">
+                        <div class="field">
+                            <div class="ui left icon input">
+                                <i class="user icon"></i>
+                                <input type="text" name="email" placeholder="E-mail address">
+                            </div>
+                        </div>
+                        <div class="field">
+                            <div class="ui left icon input">
+                                <i class="lock icon"></i>
+                                <input type="password" name="password" placeholder="Password">
+                            </div>
+                        </div>
+                        <!-- cant set brand colour -->
+                        <div class="brand ui fluid large primary submit button">Login</div>
+                    </div>
+                </form>
+
+                <div class="ui message">
+                    New to us? <a href="#">Sign Up</a>
                 </div>
             </div>
         </div>
@@ -74,6 +121,30 @@
         $('.ui.dropdown')
             .dropdown()
             ;
+        $(document).on('click', '#loginButton', function () {
+            $('.ui.tiny.modal')
+                .modal({
+                    blurring: true
+                })
+                .modal('setting', 'transition', "scale")
+                .modal('show')
+        });
+
+        $('#loginForm .submit.button')
+            .api({
+                url: '/login',
+                method: 'POST',
+                serializeForm: true,
+                beforeSend: function (settings) {
+                    console.log(settings)
+                    return settings
+                },
+                onResponse: function (response) {
+                    console.log("RESPONSE = ");
+                    console.log(response);
+                    return response
+                }
+            });
     </script>
 
 </body>
