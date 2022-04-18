@@ -129,6 +129,16 @@ jobs:
           ls ./build/badges/
           cat ./build/badges/rating.svg
 
+      # Upload badge artifacts to this repo
+      - name: Upload badge artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: repo-badge-directory
+          path: |
+            ./stub_artifact.txt
+            ./build/badges/
+          retention-days: 90
+
       # Push badge to another repo
       - name: Pushes badge file
         uses: dmnemec/copy_file_to_another_repo_action@main
