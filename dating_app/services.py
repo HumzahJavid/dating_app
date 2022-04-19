@@ -20,6 +20,8 @@ async def list_dbs(client):
 
 async def main():
     client = create_database()
+    default_database = client.get_default_database()
+    print(f"default db: {default_database.name}")
     dbs = await list_dbs(client)
     print(dbs)
 
