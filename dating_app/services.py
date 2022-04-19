@@ -21,8 +21,12 @@ async def insert_and_display_test_data(client):
     # display data
     docs_cursor = collection_name.find()
     # must specify list length (can be larger than actual number of collections)
-    result = await docs_cursor.to_list(100)
-    print(result)
+    # result = await docs_cursor.to_list(100)
+    # print(result)
+
+    # https://motor.readthedocs.io/en/stable/api-asyncio/cursors.html#asynciomotorcommandcursor
+    async for doc in docs_cursor:
+        print(doc)
 
 
 # ---------------- example features / testing purposes
