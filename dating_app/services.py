@@ -18,6 +18,12 @@ async def insert_and_display_test_data(client):
     result = await collection_name.insert_one(test_doc)
     print(result.inserted_id)
 
+    # display data
+    docs_cursor = collection_name.find()
+    # must specify list length (can be larger than actual number of collections)
+    result = await docs_cursor.to_list(100)
+    print(result)
+
 
 # ---------------- example features / testing purposes
 
