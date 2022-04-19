@@ -10,9 +10,13 @@ def create_database():
     return client
 
 
-async def list_dbs(client):
-    dbs = await client.list_database_names()
-    return dbs
+async def insert_and_display_test_data(client):
+    default_db = client.get_default_database()
+
+    collection_name = default_db["collection_test"]
+    test_doc = {"key_1": "Test field in test doc", "key_2": 42}
+    result = await collection_name.insert_one(test_doc)
+    print(result.inserted_id)
 
 
 # ---------------- example features / testing purposes
@@ -20,10 +24,7 @@ async def list_dbs(client):
 
 async def main():
     client = create_database()
-    default_database = client.get_default_database()
-    print(f"default db: {default_database.name}")
-    dbs = await list_dbs(client)
-    print(dbs)
+    await insert_and_display_test_data(client)
 
 
 if __name__ == "__main__":
