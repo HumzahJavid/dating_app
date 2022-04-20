@@ -19,15 +19,20 @@ class PyObjectId(ObjectId):
         field_schema.update(type="string")
 
 
-class UserModel(BaseModel):
+class MongoModel(BaseModel):
     id: PyObjectId = Field(default_factory=PyObjectId, alias="_id")
-    name: str = Field(...)
-    email: EmailStr = Field(...)
 
     class Config:
         allow_population_by_field_name = True
         arbitrary_types_allowed = True
         json_encoders = {ObjectId: str}
+
+
+class UserModel(MongoModel):
+    name: str = Field(...)
+    email: EmailStr = Field(...)
+
+    class Config:
         schema_extra = {
             "example": {
                 "name": "Jane Doe",
