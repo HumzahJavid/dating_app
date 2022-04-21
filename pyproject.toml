@@ -56,6 +56,7 @@ email-validator = "^1.1.3"
 
 [tool.pylint.master]
 persistent = "yes"
+extension-pkg-whitelist="pydantic"
 
 [tool.pylint.messages_control]
 max-line-length = 88
