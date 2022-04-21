@@ -131,3 +131,5 @@ dmypy.json
 # local IDE settings:
 .vscode
 .idea
+
+dating_app/db/mongodb/*
