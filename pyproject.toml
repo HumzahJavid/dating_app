@@ -16,7 +16,7 @@ exclude = [
     'db/mongodb/'
 ]
 [[tool.mypy.overrides]]
-module = [ "uvicorn", "requests",]
+module = [ "uvicorn", "requests", "motor", "motor.motor_asyncio", "bson",]
 ignore_missing_imports = true
 
 [tool.isort]
