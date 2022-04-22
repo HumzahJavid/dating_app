@@ -4,6 +4,8 @@ from fastapi import APIRouter, FastAPI, Form, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
+import dating_app.services as services
+
 BASE_PATH = Path(__file__).resolve().parent
 templates = Jinja2Templates(directory=BASE_PATH / "templates")
 
@@ -11,6 +13,16 @@ templates = Jinja2Templates(directory=BASE_PATH / "templates")
 app = FastAPI()
 app.mount("/static", StaticFiles(directory=BASE_PATH / "static"), name="static")
 api_router = APIRouter()
+
+
+@app.on_event("startup")
+async def startup_db_client() -> None:
+    services.create_database()
+
+
+@app.on_event("shutdown")
+async def shutdown_db_client() -> None:
+    app.mongodb.close()
 
 
 # @app.get("/")

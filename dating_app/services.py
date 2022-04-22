@@ -5,9 +5,7 @@ from motor.motor_asyncio import AsyncIOMotorClient
 
 
 def create_database():
-    client = AsyncIOMotorClient(MONGODB_URL)
-
-    return client
+    return AsyncIOMotorClient(MONGODB_URL)
 
 
 # return a session
