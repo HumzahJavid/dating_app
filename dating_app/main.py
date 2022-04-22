@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from fastapi import APIRouter, FastAPI, Request
+from fastapi import APIRouter, FastAPI, Form, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
@@ -24,6 +24,23 @@ async def read_item(request: Request, item_id: int):
     return templates.TemplateResponse(
         "items.html", {"request": request, "item_id": item_id}
     )
+
+
+@api_router.post("/login")
+def login(email: str = Form(...), password: str = Form(...)):
+    return {
+        f"email: {email}, password: {password}",
+    }
+
+
+@api_router.post("/register")
+def register(
+    email: str = Form(...),
+    password: str = Form(...),
+):
+    return {
+        f"Registered account: {email}",
+    }
 
 
 app.include_router(api_router)
