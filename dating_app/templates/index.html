@@ -212,11 +212,30 @@
                     return settings
                 },
                 onResponse: function (response) {
-                    console.log("RESPONSE = ");
+                    console.log("response = ");
                     console.log(response);
                     $('#registrationModal').modal('hide')
                     return response
-                }
+                },
+                onSuccess: function (response, element, xhr) {
+                    // valid response and response.success = true
+                    console.log("response = ");
+                    console.log(response);
+                    console.log("element = ");
+                    console.log(element);
+                    console.log("xhr = ");
+                    console.log(xhr);
+                    $('#registrationModal').modal('hide')
+                },
+                onError(errorMessage, element, xhr) {
+                    console.log("errorMessage = ");
+                    console.log(errorMessage);
+                    console.log("element = ");
+                    console.log(element);
+                    console.log("xhr = ");
+                    console.log(xhr);
+                    return { errorMessage, element, xhr }
+                },
             });
 
         $(document).on('click', '#registrationLink', function () {

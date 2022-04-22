@@ -55,15 +55,12 @@ async def register(
     password: str = Form(...),
     confirmPassword: str = Form(...),
 ):
-    test_user = UserCreate(
+    user = UserCreate(
         email=email, password=password, confirmed_password=confirmPassword
     )
-    print(f"user {test_user}")
-    await services.insert_and_display_test_data(app.mongodb)
+    response = await services.create_user(app.mongodb, user)
 
-    return {
-        f"Registered account: {test_user}",
-    }
+    return response
 
 
 app.include_router(api_router)

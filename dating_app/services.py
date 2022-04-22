@@ -1,7 +1,11 @@
 import asyncio
 
 from db.database import MONGODB_URL
+from fastapi import status
+from fastapi.encoders import jsonable_encoder
+from fastapi.responses import JSONResponse
 from motor.motor_asyncio import AsyncIOMotorClient
+from schemas.User import UserCreate
 
 
 # return a session
@@ -32,9 +36,15 @@ async def insert_and_display_test_data(client):
         print(doc)
 
 
+async def create_user(db, user: UserCreate):
+    user = jsonable_encoder(user)
+    new_user = await db["users"].insert_one(user)
+    created_user = await db["users"].find_one({"_id": new_user.inserted_id})
+    print(f"Created user is {created_user}")
+    return JSONResponse(status_code=status.HTTP_201_CREATED, content=created_user)
+
+
 # ---------------- example features / testing purposes
-
-
 if __name__ == "__main__":
     client = AsyncIOMotorClient(MONGODB_URL)
     asyncio.run(insert_and_display_test_data(client))
