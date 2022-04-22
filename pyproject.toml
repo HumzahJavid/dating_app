@@ -13,7 +13,7 @@ warn_return_any = true
 warn_unused_configs = true
 warn_redundant_casts = true
 exclude = [
-    'db/mongodb/'
+    'mongodb/'
 ]
 [[tool.mypy.overrides]]
 module = [ "uvicorn", "requests", "motor", "motor.motor_asyncio", "bson",]
