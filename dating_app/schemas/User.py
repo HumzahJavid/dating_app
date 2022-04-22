@@ -29,13 +29,12 @@ class MongoModel(BaseModel):
 
 
 class UserModel(MongoModel):
-    name: str = Field(...)
     email: EmailStr = Field(...)
+    password: str
 
     class Config:
         schema_extra = {
             "example": {
-                "name": "Jane Doe",
                 "email": "jdoe@example.com",
             }
         }
