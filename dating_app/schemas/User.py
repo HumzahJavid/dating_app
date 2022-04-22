@@ -1,3 +1,5 @@
+from typing import Optional
+
 from bson import ObjectId
 from pydantic import BaseModel, EmailStr, Field
 
@@ -38,3 +40,14 @@ class UserModel(MongoModel):
                 "email": "jdoe@example.com",
             }
         }
+
+
+# the fields from post request
+class UserCreate(UserModel):
+    confirmed_password: str
+
+
+# any none id field optional
+class UserUpdate(MongoModel):
+    email: Optional[EmailStr]
+    password: Optional[str]
