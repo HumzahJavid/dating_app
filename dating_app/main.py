@@ -5,6 +5,7 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 
 import dating_app.services as services
+from dating_app.schemas.User import UserModel
 
 BASE_PATH = Path(__file__).resolve().parent
 templates = Jinja2Templates(directory=BASE_PATH / "templates")
@@ -50,8 +51,10 @@ def register(
     email: str = Form(...),
     password: str = Form(...),
 ):
+    test_user = UserModel(email=email, password=password)
+    print(f"user {test_user}")
     return {
-        f"Registered account: {email}",
+        f"Registered account: {test_user}",
     }
 
 
