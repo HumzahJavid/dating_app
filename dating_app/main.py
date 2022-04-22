@@ -1,8 +1,10 @@
 from pathlib import Path
 
+from db.database import MONGODB_URL
 from fastapi import APIRouter, FastAPI, Form, Request
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from motor.motor_asyncio import AsyncIOMotorClient
 
 import dating_app.services as services
 from dating_app.schemas.User import UserCreate
@@ -18,7 +20,8 @@ api_router = APIRouter()
 
 @app.on_event("startup")
 async def startup_db_client() -> None:
-    services.create_database()
+    # services.create_database()
+    app.mongodb = AsyncIOMotorClient(MONGODB_URL)
 
 
 @app.on_event("shutdown")
@@ -47,7 +50,7 @@ def login(email: str = Form(...), password: str = Form(...)):
 
 
 @api_router.post("/register")
-def register(
+async def register(
     email: str = Form(...),
     password: str = Form(...),
     confirmPassword: str = Form(...),
@@ -56,6 +59,7 @@ def register(
         email=email, password=password, confirmed_password=confirmPassword
     )
     print(f"user {test_user}")
+    await services.insert_and_display_test_data(app.mongodb)
 
     return {
         f"Registered account: {test_user}",
