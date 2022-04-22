@@ -4,10 +4,6 @@ from db.database import MONGODB_URL
 from motor.motor_asyncio import AsyncIOMotorClient
 
 
-def create_database():
-    return AsyncIOMotorClient(MONGODB_URL)
-
-
 # return a session
 async def get_db():
     s = await client.start_session()
@@ -39,11 +35,6 @@ async def insert_and_display_test_data(client):
 # ---------------- example features / testing purposes
 
 
-async def main():
-    client = create_database()
-    await insert_and_display_test_data(client)
-
-
 if __name__ == "__main__":
     client = AsyncIOMotorClient(MONGODB_URL)
-    asyncio.run(main())
+    asyncio.run(insert_and_display_test_data(client))

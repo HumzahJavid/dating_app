@@ -20,13 +20,13 @@ api_router = APIRouter()
 
 @app.on_event("startup")
 async def startup_db_client() -> None:
-    # services.create_database()
-    app.mongodb = AsyncIOMotorClient(MONGODB_URL)
+    app.mongodb_client = AsyncIOMotorClient(MONGODB_URL)
+    app.mongodb = app.mongodb_client.get_default_database()
 
 
 @app.on_event("shutdown")
 async def shutdown_db_client() -> None:
-    app.mongodb.close()
+    app.mongodb_client.close()
 
 
 # @app.get("/")
