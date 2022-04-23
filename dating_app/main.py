@@ -1,12 +1,12 @@
 from pathlib import Path
 
-from db.database import MONGODB_URL
 from fastapi import APIRouter, FastAPI, Form, Request, Response, status
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from motor.motor_asyncio import AsyncIOMotorClient
 
 import dating_app.services as services
+from dating_app.db.database import MONGODB_URL
 from dating_app.schemas.User import RegisterResponse, UserCreate
 
 BASE_PATH = Path(__file__).resolve().parent

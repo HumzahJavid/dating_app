@@ -1,9 +1,10 @@
 import asyncio
 
-from db.database import MONGODB_URL
 from fastapi.encoders import jsonable_encoder
 from motor.motor_asyncio import AsyncIOMotorClient
-from schemas.User import RegisterResponse, UserCreate
+
+from dating_app.db.database import MONGODB_URL
+from dating_app.schemas.User import RegisterResponse, UserCreate
 
 
 # return a session
