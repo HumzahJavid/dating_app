@@ -1,19 +1,6 @@
-import asyncio
-
 from fastapi.encoders import jsonable_encoder
-from motor.motor_asyncio import AsyncIOMotorClient
 
-from dating_app.db.database import MONGODB_URL
 from dating_app.schemas.User import RegisterResponse, UserCreate
-
-
-# return a session
-async def get_db():
-    s = await client.start_session()
-    try:
-        yield s
-    finally:
-        await s.end_session()
 
 
 async def insert_and_display_test_data(client):
@@ -51,9 +38,3 @@ async def create_user(db, user: UserCreate) -> RegisterResponse:
     return RegisterResponse(
         message="Created user with email.", email=created_user["email"]
     )
-
-
-# ---------------- example features / testing purposes
-if __name__ == "__main__":
-    client = AsyncIOMotorClient(MONGODB_URL)
-    asyncio.run(insert_and_display_test_data(client))
