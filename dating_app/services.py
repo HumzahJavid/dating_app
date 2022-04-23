@@ -37,11 +37,27 @@ async def insert_and_display_test_data(client):
 
 
 async def create_user(db, user: UserCreate):
-    user = jsonable_encoder(user)
+    user_json = jsonable_encoder(user)
+    db_user = await db["users"].find_one({"email": user_json["email"]})
+
+    if db_user:
+        # # This exception is blocking
+        # raise HTTPException(status_code=409, detail="Email already in use")
+        response_body = {
+            "message": f"Email already in use. {user_json['email']}",
+            "data": user_json["email"],
+        }
+
+        return JSONResponse(status_code=status.HTTP_409_CONFLICT, content=response_body)
+
     new_user = await db["users"].insert_one(user)
     created_user = await db["users"].find_one({"_id": new_user.inserted_id})
     print(f"Created user is {created_user}")
-    return JSONResponse(status_code=status.HTTP_201_CREATED, content=created_user)
+    response_body = {
+        "message": f"Created user with email. {created_user['email']}",
+        "data": user,
+    }
+    return JSONResponse(status_code=status.HTTP_201_CREATED, content=response_body)
 
 
 # ---------------- example features / testing purposes

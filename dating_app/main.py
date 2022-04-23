@@ -1,7 +1,7 @@
 from pathlib import Path
 
 from db.database import MONGODB_URL
-from fastapi import APIRouter, FastAPI, Form, Request
+from fastapi import APIRouter, FastAPI, Form, Request, status
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from motor.motor_asyncio import AsyncIOMotorClient
@@ -49,7 +49,7 @@ def login(email: str = Form(...), password: str = Form(...)):
     }
 
 
-@api_router.post("/register")
+@api_router.post("/register", status_code=status.HTTP_201_CREATED)
 async def register(
     email: str = Form(...),
     password: str = Form(...),
