@@ -1,13 +1,13 @@
 from pathlib import Path
 
 from db.database import MONGODB_URL
-from fastapi import APIRouter, FastAPI, Form, Request, status
+from fastapi import APIRouter, FastAPI, Form, Request, Response, status
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from motor.motor_asyncio import AsyncIOMotorClient
 
 import dating_app.services as services
-from dating_app.schemas.User import UserCreate
+from dating_app.schemas.User import RegisterResponse, UserCreate
 
 BASE_PATH = Path(__file__).resolve().parent
 templates = Jinja2Templates(directory=BASE_PATH / "templates")
@@ -49,8 +49,11 @@ def login(email: str = Form(...), password: str = Form(...)):
     }
 
 
-@api_router.post("/register", status_code=status.HTTP_201_CREATED)
+@api_router.post(
+    "/register", status_code=status.HTTP_201_CREATED, response_model=RegisterResponse
+)
 async def register(
+    response: Response,
     email: str = Form(...),
     password: str = Form(...),
     confirmPassword: str = Form(...),
@@ -58,9 +61,12 @@ async def register(
     user = UserCreate(
         email=email, password=password, confirmed_password=confirmPassword
     )
-    response = await services.create_user(app.mongodb, user)
+    register_response = await services.create_user(app.mongodb, user)
 
-    return response
+    if "already in use." in register_response.message:
+        response.status_code = status.HTTP_409_CONFLICT
+
+    return register_response
 
 
 app.include_router(api_router)

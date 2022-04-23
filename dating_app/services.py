@@ -1,11 +1,9 @@
 import asyncio
 
 from db.database import MONGODB_URL
-from fastapi import status
 from fastapi.encoders import jsonable_encoder
-from fastapi.responses import JSONResponse
 from motor.motor_asyncio import AsyncIOMotorClient
-from schemas.User import UserCreate
+from schemas.User import RegisterResponse, UserCreate
 
 
 # return a session
@@ -36,28 +34,22 @@ async def insert_and_display_test_data(client):
         print(doc)
 
 
-async def create_user(db, user: UserCreate):
+async def create_user(db, user: UserCreate) -> RegisterResponse:
     user_json = jsonable_encoder(user)
     db_user = await db["users"].find_one({"email": user_json["email"]})
 
     if db_user:
         # # This exception is blocking
         # raise HTTPException(status_code=409, detail="Email already in use")
-        response_body = {
-            "message": f"Email already in use. {user_json['email']}",
-            "data": user_json["email"],
-        }
+        return RegisterResponse(
+            message="Email already in use.", email=user_json["email"]
+        )
 
-        return JSONResponse(status_code=status.HTTP_409_CONFLICT, content=response_body)
-
-    new_user = await db["users"].insert_one(user)
+    new_user = await db["users"].insert_one(user_json)
     created_user = await db["users"].find_one({"_id": new_user.inserted_id})
-    print(f"Created user is {created_user}")
-    response_body = {
-        "message": f"Created user with email. {created_user['email']}",
-        "data": user,
-    }
-    return JSONResponse(status_code=status.HTTP_201_CREATED, content=response_body)
+    return RegisterResponse(
+        message="Created user with email.", email=created_user["email"]
+    )
 
 
 # ---------------- example features / testing purposes

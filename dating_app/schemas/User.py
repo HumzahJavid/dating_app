@@ -51,3 +51,8 @@ class UserCreate(UserModel):
 class UserUpdate(MongoModel):
     email: Optional[EmailStr]
     password: Optional[str]
+
+
+class RegisterResponse(BaseModel):
+    message: str
+    email: str
