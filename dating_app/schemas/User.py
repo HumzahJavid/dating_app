@@ -55,4 +55,12 @@ class UserUpdate(MongoModel):
 
 class RegisterResponse(BaseModel):
     message: str
-    email: str
+    email: str = "jdoe.example.com"
+
+
+class RegisterResponse201(RegisterResponse):
+    message = "Created user with email."
+
+
+class RegisterResponse409(RegisterResponse):
+    message = "Email already in use."
