@@ -54,7 +54,7 @@ def login(email: str = Form(...), password: str = Form(...)):
     "/register",
     status_code=status.HTTP_201_CREATED,
     response_model=RegisterResponse,
-    responses=RegisterResponseBase.Config.schema_extra,
+    responses=RegisterResponseBase.Config.schema_extra,  # type: ignore
 )
 async def register(
     response: Response,
