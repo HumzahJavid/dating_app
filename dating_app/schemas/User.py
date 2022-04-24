@@ -64,3 +64,11 @@ class RegisterResponse201(RegisterResponse):
 
 class RegisterResponse409(RegisterResponse):
     message = "Email already in use."
+
+
+class RegisterResponseBase(RegisterResponse):
+    class Config:
+        schema_extra = {
+            "201": {"model": RegisterResponse201},
+            "409": {"model": RegisterResponse409},
+        }

@@ -6,12 +6,7 @@ from fastapi.templating import Jinja2Templates
 
 import dating_app.services as services
 from dating_app.db.database import MongoDB
-from dating_app.schemas.User import (
-    RegisterResponse,
-    RegisterResponse201,
-    RegisterResponse409,
-    UserCreate,
-)
+from dating_app.schemas.User import RegisterResponse, RegisterResponseBase, UserCreate
 
 BASE_PATH = Path(__file__).resolve().parent
 templates = Jinja2Templates(directory=BASE_PATH / "templates")
@@ -59,10 +54,7 @@ def login(email: str = Form(...), password: str = Form(...)):
     "/register",
     status_code=status.HTTP_201_CREATED,
     response_model=RegisterResponse,
-    responses={
-        "201": {"model": RegisterResponse201},
-        "409": {"model": RegisterResponse409},
-    },
+    responses=RegisterResponseBase.Config.schema_extra,
 )
 async def register(
     response: Response,
