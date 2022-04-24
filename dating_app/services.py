@@ -1,22 +1,6 @@
-import asyncio
+from fastapi.encoders import jsonable_encoder
 
-from db.database import MONGODB_URL
-from motor.motor_asyncio import AsyncIOMotorClient
-
-
-def create_database():
-    client = AsyncIOMotorClient(MONGODB_URL)
-
-    return client
-
-
-# return a session
-async def get_db():
-    s = await client.start_session()
-    try:
-        yield s
-    finally:
-        await s.end_session()
+from dating_app.schemas.User import RegisterResponse, UserCreate
 
 
 async def insert_and_display_test_data(client):
@@ -38,14 +22,19 @@ async def insert_and_display_test_data(client):
         print(doc)
 
 
-# ---------------- example features / testing purposes
+async def create_user(db, user: UserCreate) -> RegisterResponse:
+    user_json = jsonable_encoder(user)
+    db_user = await db["users"].find_one({"email": user_json["email"]})
 
+    if db_user:
+        # # This exception is blocking
+        # raise HTTPException(status_code=409, detail="Email already in use")
+        return RegisterResponse(
+            message="Email already in use.", email=user_json["email"]
+        )
 
-async def main():
-    client = create_database()
-    await insert_and_display_test_data(client)
-
-
-if __name__ == "__main__":
-    client = AsyncIOMotorClient(MONGODB_URL)
-    asyncio.run(main())
+    new_user = await db["users"].insert_one(user_json)
+    created_user = await db["users"].find_one({"_id": new_user.inserted_id})
+    return RegisterResponse(
+        message="Created user with email.", email=created_user["email"]
+    )

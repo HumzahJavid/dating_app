@@ -1,3 +1,5 @@
+from typing import Optional
+
 from bson import ObjectId
 from pydantic import BaseModel, EmailStr, Field
 
@@ -29,13 +31,44 @@ class MongoModel(BaseModel):
 
 
 class UserModel(MongoModel):
-    name: str = Field(...)
     email: EmailStr = Field(...)
+    password: str
 
     class Config:
         schema_extra = {
             "example": {
-                "name": "Jane Doe",
                 "email": "jdoe@example.com",
             }
+        }
+
+
+# the fields from post request
+class UserCreate(UserModel):
+    confirmed_password: str
+
+
+# any none id field optional
+class UserUpdate(MongoModel):
+    email: Optional[EmailStr]
+    password: Optional[str]
+
+
+class RegisterResponse(BaseModel):
+    message: str
+    email: str = "jdoe.example.com"
+
+
+class RegisterResponse201(RegisterResponse):
+    message = "Created user with email."
+
+
+class RegisterResponse409(RegisterResponse):
+    message = "Email already in use."
+
+
+class RegisterResponseBase(RegisterResponse):
+    class Config:
+        schema_extra = {
+            "201": {"model": RegisterResponse201},
+            "409": {"model": RegisterResponse409},
         }

@@ -13,7 +13,7 @@ warn_return_any = true
 warn_unused_configs = true
 warn_redundant_casts = true
 exclude = [
-    'db/mongodb/'
+    'mongodb/'
 ]
 [[tool.mypy.overrides]]
 module = [ "uvicorn", "requests", "motor", "motor.motor_asyncio", "bson",]
@@ -34,6 +34,7 @@ Jinja2 = "^3.1.1"
 toml = "^0.10.2"
 anybadge = "^1.9.0"
 motor = "^2.5.1"
+python-multipart = "^0.0.5"
 
 [tool.poetry.dev-dependencies]
 black = "^22.3.0"
