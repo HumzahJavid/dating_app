@@ -241,7 +241,13 @@
                     console.log(element);
                     console.log("xhr = ");
                     console.log(xhr);
-                    return { errorMessage, element, xhr }
+                    response = xhr.responseJSON
+                    $('body').toast({
+                        class: 'error',
+                        message: `${response.message} ${response.email}`,
+                        pauseOnHover: false,
+                        showProgress: 'top'
+                    });
                 },
             });
 
