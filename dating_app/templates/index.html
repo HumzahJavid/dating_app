@@ -226,6 +226,13 @@
                     console.log("xhr = ");
                     console.log(xhr);
                     $('#registrationModal').modal('hide')
+                    $('body').toast({
+                        class: 'success',
+                        message: `${response.message} ${response.email}`,
+                        pauseOnHover: false,
+                        showProgress: 'top'
+                    });
+                    $('#loginModal').modal('show')
                 },
                 onError(errorMessage, element, xhr) {
                     console.log("errorMessage = ");
