@@ -68,8 +68,8 @@ async def login(
     if "Invalid" in login_response.message:
         print(f"Invalid credentials 401: {email}")
         response.status_code = status.HTTP_401_UNAUTHORIZED
-
-    response.set_cookie(key="X-Authorization", value=email, httponly=True)
+    else:
+        response.set_cookie(key="X-Authorization", value=email, httponly=True)
 
     return login_response
 
