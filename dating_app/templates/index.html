@@ -163,14 +163,6 @@
     </div>
 
     <script>
-        function disable_login_button_if_auth() {
-            // unable to read httponly cookie, so using session storage instead
-            if (sessionStorage.getItem("loggedIn") !== null) {
-                $('#loginButton').addClass('disabled')
-            }
-            // hide button on load
-            $('#logoutButton').hide()
-        }
 
         $('.ui.dropdown')
             .dropdown();
@@ -203,7 +195,6 @@
                             pauseOnHover: false,
                             showProgress: 'top'
                         });
-                        sessionStorage.removeItem("loggedIn");
                         swap_buttons();
                     },
                 });
@@ -238,9 +229,7 @@
                         pauseOnHover: false,
                         showProgress: 'top'
                     });
-                    sessionStorage.setItem("loggedIn", true);
                     console.log("deactivating login (and reg)")
-                    disable_login_button_if_auth()
                     swap_buttons()
                 },
                 onError(errorMessage, element, xhr) {
@@ -343,7 +332,7 @@
             visible_element.hide();
 
         }
-        window.onload = disable_login_button_if_auth();
+        window.onload = $('#logoutButton').hide();
     </script>
 
 </body>
