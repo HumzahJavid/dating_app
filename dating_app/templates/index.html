@@ -166,7 +166,7 @@
         $(document).on('click', '#loginButton', function () {
             $('#loginModal')
                 .modal({
-                    blurring: true
+                    blurring: false
                 })
                 .modal('setting', 'transition', "scale")
                 .modal('show')
@@ -186,7 +186,39 @@
                     console.log(response);
                     $('#loginModal').modal('hide')
                     return response
-                }
+                },
+                onSuccess: function (response, element, xhr) {
+                    // valid response and response.success = true
+                    console.log("response = ");
+                    console.log(response);
+                    console.log("element = ");
+                    console.log(element);
+                    console.log("xhr = ");
+                    console.log(xhr);
+                    $('#loginModal').modal('hide')
+                    $('body').toast({
+                        class: 'success',
+                        message: `Login successful`,
+                        pauseOnHover: false,
+                        showProgress: 'top'
+                    });
+                },
+                onError(errorMessage, element, xhr) {
+                    console.log("errorMessage = ");
+                    console.log(errorMessage);
+                    console.log("element = ");
+                    console.log(element);
+                    console.log("xhr = ");
+                    console.log(xhr);
+                    response = xhr.responseJSON
+                    $('#loginModal').modal('hide')
+                    $('body').toast({
+                        class: 'error',
+                        message: `invalid credentials`,
+                        pauseOnHover: false,
+                        showProgress: 'top'
+                    });
+                },
             });
 
         $('#registrationForm')
