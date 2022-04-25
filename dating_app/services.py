@@ -1,6 +1,6 @@
 from fastapi.encoders import jsonable_encoder
 
-from dating_app.schemas.User import RegisterResponse, UserCreate
+from dating_app.schemas.User import RegisterResponse, UserCreate, UserModel
 
 
 async def insert_and_display_test_data(client):
@@ -38,3 +38,19 @@ async def create_user(db, user: UserCreate) -> RegisterResponse:
     return RegisterResponse(
         message="Created user with email.", email=created_user["email"]
     )
+
+
+async def authenticate_user(db, user: UserModel):
+    user_json = jsonable_encoder(user)
+
+    db_user = await db["users"].find_one({"email": user_json["email"]})
+
+    if not db_user:
+        return False
+
+    password_match = user_json["password"] == db_user["password"]
+
+    if not password_match:
+        return False
+
+    return user_json
