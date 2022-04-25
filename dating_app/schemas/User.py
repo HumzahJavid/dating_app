@@ -54,6 +54,11 @@ class UserUpdate(MongoModel):
     password: Optional[str]
 
 
+class UserPublic(MongoModel):
+    name: str = "Jane Doe"
+    email: EmailStr = "jdoe.example.com"
+
+
 class RegisterResponse(BaseModel):
     message: str
     email: str = "jdoe.example.com"

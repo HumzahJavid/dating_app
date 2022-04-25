@@ -6,6 +6,7 @@ from dating_app.schemas.User import (
     RegisterResponse,
     UserCreate,
     UserModel,
+    UserPublic,
 )
 
 
@@ -78,3 +79,13 @@ async def logout(db):
 
     db["users"].update_one({"email": user["email"]}, {"$set": {"is_active": False}})
     return {"message": "Logged out"}
+
+
+async def list_users(db):
+    users = []
+    # find all users except the logged in user
+    users_cursor = db["users"].find({"is_active": {"$nin": [True]}})
+    async for user in users_cursor:
+        users.append(UserPublic(name=UserPublic().name, email=user["email"]))
+
+    return users

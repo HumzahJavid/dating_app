@@ -1,4 +1,5 @@
 from pathlib import Path
+from typing import List
 
 from fastapi import APIRouter, FastAPI, Form, Request, Response, status
 from fastapi.staticfiles import StaticFiles
@@ -13,6 +14,7 @@ from dating_app.schemas.User import (
     RegisterResponseBase,
     UserCreate,
     UserModel,
+    UserPublic,
 )
 
 BASE_PATH = Path(__file__).resolve().parent
@@ -101,6 +103,14 @@ async def register(
         response.status_code = status.HTTP_409_CONFLICT
 
     return register_response
+
+
+@api_router.get(
+    "/all", response_description="List all other Users", response_model=List[UserPublic]
+)
+async def list_all():
+    all_users = await services.list_users(mongo.mongodb)
+    return all_users
 
 
 app.include_router(api_router)
