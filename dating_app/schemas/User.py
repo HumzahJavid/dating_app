@@ -33,6 +33,7 @@ class MongoModel(BaseModel):
 class UserModel(MongoModel):
     email: EmailStr = Field(...)
     password: str
+    is_active: Optional[bool] = False
 
     class Config:
         schema_extra = {
