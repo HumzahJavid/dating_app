@@ -163,7 +163,7 @@
     </div>
 
     <script>
-        function disable_login_button_if_auth_hide_logout() {
+        function disable_login_button_if_auth() {
             // unable to read httponly cookie, so using session storage instead
             if (sessionStorage.getItem("loggedIn") !== null) {
                 $('#loginButton').addClass('disabled')
@@ -171,9 +171,9 @@
             // hide button on load
             $('#logoutButton').hide()
         }
+
         $('.ui.dropdown')
-            .dropdown()
-            ;
+            .dropdown();
         $(document).on('click', '#loginButton', function () {
             $('#loginModal')
                 .modal({
@@ -183,6 +183,31 @@
                 .modal('show')
         });
 
+        $(document).on('click', '#logoutButton', function () {
+            $('#logoutButton')
+                .api({
+                    url: '/logout',
+                    method: 'POST',
+                    onResponse: function (response) {
+                        console.log("logout response = ");
+                        console.log(response);
+
+                    },
+                    onSuccess: function (response, element, xhr) {
+                        // valid response and response.success = true
+                        console.log("xhr = ");
+                        console.log(xhr);
+                        $('body').toast({
+                            class: 'success',
+                            message: `${response.message}`,
+                            pauseOnHover: false,
+                            showProgress: 'top'
+                        });
+                        sessionStorage.removeItem("loggedIn");
+                        swap_buttons();
+                    },
+                });
+        });
         $('#loginForm .submit.button')
             .api({
                 url: '/login',
@@ -318,7 +343,7 @@
             visible_element.hide();
 
         }
-        window.onload = disable_login_button_if_auth_hide_logout();
+        window.onload = disable_login_button_if_auth();
     </script>
 
 </body>

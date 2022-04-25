@@ -59,4 +59,22 @@ async def authenticate_user(db, user: UserModel):
     if not password_match:
         return LoginResponse401()
 
+    db["users"].update_one({"email": user_json["email"]}, {"$set": {"is_active": True}})
     return LoginResponse200()
+
+
+async def get_current_user(db):
+    user = await db["users"].find_one({"is_active": True})
+    if not user:
+        print("Active User not found")
+
+    return user
+
+
+async def logout(db):
+    user = await get_current_user(db)
+    if not user:
+        return {"message": "500 no active users to logout"}
+
+    db["users"].update_one({"email": user["email"]}, {"$set": {"is_active": False}})
+    return {"message": "Logged out"}
