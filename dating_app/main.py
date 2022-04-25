@@ -7,6 +7,8 @@ from fastapi.templating import Jinja2Templates
 import dating_app.services as services
 from dating_app.db.database import MongoDB
 from dating_app.schemas.User import (
+    LoginResponse,
+    LoginResponseBase,
     RegisterResponse,
     RegisterResponseBase,
     UserCreate,
@@ -51,6 +53,8 @@ async def read_item(request: Request, item_id: int):
 @api_router.post(
     "/login",
     status_code=status.HTTP_200_OK,
+    response_model=LoginResponse,
+    responses=LoginResponseBase.Config.schema_extra,  # type: ignore
 )
 async def login(
     response: Response,
@@ -59,16 +63,15 @@ async def login(
 ):
 
     user_form = UserModel(email=email, password=password)
-    user = await services.authenticate_user(mongo.mongodb, user_form)
-    if not user:
-        print("invalid credentials 401")
+    login_response = await services.authenticate_user(mongo.mongodb, user_form)
+    print(f"user is {login_response}")
+    if "Invalid" in login_response.message:
+        print(f"Invalid credentials 401: {email}")
         response.status_code = status.HTTP_401_UNAUTHORIZED
-        return "Invalid credentials"
 
-    response.set_cookie(key="X-Authorization", value=user["email"], httponly=True)
-    return {
-        f"Login Successful {email}",
-    }
+    response.set_cookie(key="X-Authorization", value=email, httponly=True)
+
+    return login_response
 
 
 @api_router.post(

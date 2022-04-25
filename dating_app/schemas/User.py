@@ -72,3 +72,23 @@ class RegisterResponseBase(RegisterResponse):
             "201": {"model": RegisterResponse201},
             "409": {"model": RegisterResponse409},
         }
+
+
+class LoginResponse(BaseModel):
+    message: str
+
+
+class LoginResponse200(LoginResponse):
+    message = "Login successful."
+
+
+class LoginResponse401(LoginResponse):
+    message = "Invalid credentials."
+
+
+class LoginResponseBase(LoginResponse):
+    class Config:
+        schema_extra = {
+            "200": {"model": LoginResponse200},
+            "401": {"model": LoginResponse401},
+        }

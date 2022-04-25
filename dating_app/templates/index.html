@@ -198,7 +198,7 @@
                     $('#loginModal').modal('hide')
                     $('body').toast({
                         class: 'success',
-                        message: `Login successful`,
+                        message: `${response.message}`,
                         pauseOnHover: false,
                         showProgress: 'top'
                     });
@@ -214,7 +214,7 @@
                     $('#loginModal').modal('hide')
                     $('body').toast({
                         class: 'error',
-                        message: `invalid credentials`,
+                        message: `${response.message}`,
                         pauseOnHover: false,
                         showProgress: 'top'
                     });
