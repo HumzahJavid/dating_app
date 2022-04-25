@@ -69,6 +69,9 @@
                     <a class="ui item" id="loginButton">
                         Login
                     </a>
+                    <a class="ui item" id="logoutButton">
+                        Logout
+                    </a>
                 </div>
             </div>
         </div>
@@ -160,18 +163,42 @@
     </div>
 
     <script>
+
         $('.ui.dropdown')
-            .dropdown()
-            ;
+            .dropdown();
         $(document).on('click', '#loginButton', function () {
             $('#loginModal')
                 .modal({
-                    blurring: true
+                    blurring: false
                 })
                 .modal('setting', 'transition', "scale")
                 .modal('show')
         });
 
+        $(document).on('click', '#logoutButton', function () {
+            $('#logoutButton')
+                .api({
+                    url: '/logout',
+                    method: 'POST',
+                    onResponse: function (response) {
+                        console.log("logout response = ");
+                        console.log(response);
+
+                    },
+                    onSuccess: function (response, element, xhr) {
+                        // valid response and response.success = true
+                        console.log("xhr = ");
+                        console.log(xhr);
+                        $('body').toast({
+                            class: 'success',
+                            message: `${response.message}`,
+                            pauseOnHover: false,
+                            showProgress: 'top'
+                        });
+                        swap_buttons();
+                    },
+                });
+        });
         $('#loginForm .submit.button')
             .api({
                 url: '/login',
@@ -186,7 +213,41 @@
                     console.log(response);
                     $('#loginModal').modal('hide')
                     return response
-                }
+                },
+                onSuccess: function (response, element, xhr) {
+                    // valid response and response.success = true
+                    console.log("response = ");
+                    console.log(response);
+                    console.log("element = ");
+                    console.log(element);
+                    console.log("xhr = ");
+                    console.log(xhr);
+                    $('#loginModal').modal('hide')
+                    $('body').toast({
+                        class: 'success',
+                        message: `${response.message}`,
+                        pauseOnHover: false,
+                        showProgress: 'top'
+                    });
+                    console.log("deactivating login (and reg)")
+                    swap_buttons()
+                },
+                onError(errorMessage, element, xhr) {
+                    console.log("errorMessage = ");
+                    console.log(errorMessage);
+                    console.log("element = ");
+                    console.log(element);
+                    console.log("xhr = ");
+                    console.log(xhr);
+                    response = xhr.responseJSON
+                    $('#loginModal').modal('hide')
+                    $('body').toast({
+                        class: 'error',
+                        message: `${response.message}`,
+                        pauseOnHover: false,
+                        showProgress: 'top'
+                    });
+                },
             });
 
         $('#registrationForm')
@@ -259,6 +320,19 @@
                 .modal('setting', 'transition', "scale")
                 .modal('show')
         });
+        function swap_buttons() {
+            if ($('#logoutButton').css('display') == 'none') {
+                hidden_element = $('#logoutButton');
+                visible_element = $('#loginButton');
+            } else {
+                hidden_element = $('#loginButton');
+                visible_element = $('#logoutButton');
+            }
+            hidden_element.show();
+            visible_element.hide();
+
+        }
+        window.onload = $('#logoutButton').hide();
     </script>
 
 </body>

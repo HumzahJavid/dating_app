@@ -160,8 +160,6 @@ jobs:
           GIT_BRANCH=${GITHUB_REF##*/}
           echo "BRANCH=$GIT_BRANCH" >> $GITHUB_ENV
           echo "{{ env.BRANCH }}"
-        # Only continue if this is a merge request, or a commit to 'main'
-        if: github.event.pull_request.merged == true || env.BRANCH == 'main'
       - name: Check out repository
         uses: actions/checkout@v2
 
@@ -172,6 +170,8 @@ jobs:
 
       # Push badge to another repo
       - name: Pushes badge file
+        # Only continue if this is a merge request, or a commit to 'main'
+        if: github.event.pull_request.merged == true || env.BRANCH == 'main'
         uses: dmnemec/copy_file_to_another_repo_action@main
         env:
           API_TOKEN_GITHUB: ${{ secrets.API_TOKEN_GITHUB }}
