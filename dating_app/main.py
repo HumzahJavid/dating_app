@@ -118,7 +118,7 @@ async def list_all():
     "/search",
     status_code=status.HTTP_200_OK,
     response_description="Search for other Users",
-    response_model=List[UserPublic],
+    # response_model=List[UserSearch],
 )
 async def search(
     search_type: str,
@@ -128,6 +128,9 @@ async def search(
     max_age: Optional[int] = None,
     gender: Optional[str] = None,
 ):
+
+    # if search by email, redirect to find_one by email endpoint?
+
     # initialise to run server side validation
     search_criteria: UserSearch = UserSearch(
         search_type=search_type,
@@ -139,6 +142,7 @@ async def search(
     )
 
     found_users = await services.search_users(mongo.mongodb, search_criteria)
+    print(f"api result = {found_users}")
 
     return found_users
 
