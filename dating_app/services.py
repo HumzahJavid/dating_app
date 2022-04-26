@@ -7,6 +7,7 @@ from dating_app.schemas.User import (
     UserCreate,
     UserModel,
     UserPublic,
+    UserSearch,
 )
 
 
@@ -91,9 +92,9 @@ async def list_users(db):
     return users
 
 
-async def search_users(db, search_criteria: UserPublic):
+async def search_users(db, search: UserSearch):
     search_results = []
-    search_json = jsonable_encoder(search_criteria)
+    search_json = jsonable_encoder(search)
     print(search_json)
     name = search_json["name"]
     email = search_json["email"]
@@ -110,8 +111,10 @@ async def search_users(db, search_criteria: UserPublic):
 
     if email:
         # conduct a single search result
+        print(f"found email {email}, returning single result")
         user = await db["users"].find_one({"email": search_json["email"]})
         search_results.append(user)
+        return search_results
     else:
         # conduct an 'and/or
         criteria = {"age": {"$gt": min_age, "$lt": max_age}, "gender": {"$eq": gender}}
