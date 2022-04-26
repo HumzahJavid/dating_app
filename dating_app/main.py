@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import List
+from typing import List, Optional
 
 from fastapi import APIRouter, FastAPI, Form, Request, Response, status
 from fastapi.staticfiles import StaticFiles
@@ -15,6 +15,7 @@ from dating_app.schemas.User import (
     UserCreate,
     UserModel,
     UserPublic,
+    UserSearch,
 )
 
 BASE_PATH = Path(__file__).resolve().parent
@@ -111,6 +112,35 @@ async def register(
 async def list_all():
     all_users = await services.list_users(mongo.mongodb)
     return all_users
+
+
+@api_router.get(
+    "/search",
+    status_code=status.HTTP_200_OK,
+    response_description="Search for other Users",
+    response_model=List[UserPublic],
+)
+async def search(
+    search_type: str,
+    email: Optional[str] = None,
+    name: Optional[str] = None,
+    min_age: Optional[int] = None,
+    max_age: Optional[int] = None,
+    gender: Optional[str] = None,
+):
+    # initialise to run server side validation
+    search_criteria: UserSearch = UserSearch(
+        search_type=search_type,
+        name=name,
+        email=email,
+        min_age=min_age,
+        max_age=max_age,
+        gender=gender,
+    )
+
+    found_users = await services.search_users(mongo.mongodb, search_criteria)
+
+    return found_users
 
 
 app.include_router(api_router)
