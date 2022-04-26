@@ -62,14 +62,14 @@ class Gender(str, Enum):
 
 class UserPublic(MongoModel):
     name: str = "Jane Doe"
-    email: EmailStr = "jdoe.example.com"
+    email: EmailStr
     age: Optional[int] = Field(
         25,
         gt=17,
         lt=65,
     )
 
-    gender: Gender = Field("not_given", alias="Gender")
+    gender: Gender = Field("not_given")
 
 
 class UserSearch(MongoModel):
@@ -85,13 +85,12 @@ class UserSearch(MongoModel):
         lt=65,
     )
 
-    # gender: Optional[Gender] = Field("not_given", alias="Gender")
     gender: Optional[Gender] = Field("not_given")
 
 
 class RegisterResponse(BaseModel):
     message: str
-    email: str = "jdoe.example.com"
+    email: str = "jdoe@example.com"
 
 
 class RegisterResponse201(RegisterResponse):

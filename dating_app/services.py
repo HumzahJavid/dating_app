@@ -6,7 +6,6 @@ from dating_app.schemas.User import (
     RegisterResponse,
     UserCreate,
     UserModel,
-    UserPublic,
     UserSearch,
 )
 
@@ -87,8 +86,7 @@ async def list_users(db):
     # find all users except the logged in user
     users_cursor = db["users"].find({"is_active": {"$nin": [True]}})
     async for user in users_cursor:
-        users.append(UserPublic(name=UserPublic().name, email=user["email"]))
-
+        users.append(user)
     return users
 
 
@@ -121,7 +119,7 @@ async def search_users(db, search: UserSearch):
         criteria = [
             {"name": {"$eq": name}},
             {"age": {"$gt": min_age, "$lt": max_age}},
-            {"Gender": {"$eq": gender}},
+            {"gender": {"$eq": gender}},
         ]
         search_criteria = {search_type: criteria}
         print(f"searching with search criteria {search_criteria}")

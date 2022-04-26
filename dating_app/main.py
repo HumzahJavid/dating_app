@@ -118,7 +118,6 @@ async def list_all():
     "/search",
     status_code=status.HTTP_200_OK,
     response_description="Search for other Users",
-    # response_model=List[UserSearch],
 )
 async def search(
     search_type: str,
