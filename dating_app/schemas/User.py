@@ -1,3 +1,4 @@
+from enum import Enum
 from typing import Optional
 
 from bson import ObjectId
@@ -37,9 +38,7 @@ class UserModel(MongoModel):
 
     class Config:
         schema_extra = {
-            "example": {
-                "email": "jdoe@example.com",
-            }
+            "example": {"email": "jdoe@example.com", "password": "mY=HvTb8@p3MhqKB"}
         }
 
 
@@ -54,9 +53,44 @@ class UserUpdate(MongoModel):
     password: Optional[str]
 
 
+class Gender(str, Enum):
+    female = "female"
+    male = "male"
+    not_given = "not_given"
+    other = "other"
+
+
+class UserPublic(MongoModel):
+    name: str = "Jane Doe"
+    email: EmailStr
+    age: Optional[int] = Field(
+        25,
+        gt=17,
+        lt=65,
+    )
+
+    gender: Gender = Field("not_given")
+
+
+class UserSearch(MongoModel):
+    search_type: str
+    name: Optional[str] = "Jane Doe"
+    email: Optional[EmailStr]
+    min_age: Optional[int] = Field(
+        gt=17,
+        lt=65,
+    )
+    max_age: Optional[int] = Field(
+        gt=17,
+        lt=65,
+    )
+
+    gender: Optional[Gender] = Field("not_given")
+
+
 class RegisterResponse(BaseModel):
     message: str
-    email: str = "jdoe.example.com"
+    email: str = "jdoe@example.com"
 
 
 class RegisterResponse201(RegisterResponse):
@@ -93,3 +127,22 @@ class LoginResponseBase(LoginResponse):
             "200": {"model": LoginResponse200},
             "401": {"model": LoginResponse401},
         }
+
+
+""""
+class Filter(BaseModel):
+    foo: str
+    bar: str
+
+class Payload(BaseModel):
+    baz: str
+    bat: str
+
+def get_payload(payload: Payload):
+    return {}
+
+@router.post('/')
+def test(filter: Filter = Depends(), payload: dict = Depends(get_payload)):
+    pass
+
+"""
