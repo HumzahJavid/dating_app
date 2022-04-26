@@ -116,11 +116,15 @@ async def search_users(db, search: UserSearch):
         search_results.append(user)
         return search_results
     else:
-        # conduct an 'and/or
-        criteria = {"age": {"$gt": min_age, "$lt": max_age}, "gender": {"$eq": gender}}
-        search_criteria = {search_type: [criteria]}
-        print(f"searching with {search_criteria}")
-
+        print("no email found...")
+        # conduct an 'and/or' search operation
+        criteria = [
+            {"name": {"$eq": name}},
+            {"age": {"$gt": min_age, "$lt": max_age}},
+            {"Gender": {"$eq": gender}},
+        ]
+        search_criteria = {search_type: criteria}
+        print(f"searching with search criteria {search_criteria}")
         users = db["users"].find(search_criteria)
 
         async for user in users:
