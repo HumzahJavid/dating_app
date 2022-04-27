@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html>
 
-<head>{% block head %} {% endblock %}</head>
+<head>{% block head %} {% include 'head.html' %} {% endblock head %}</head>
+
+
 
 <body>
     {% block content %}{% endblock %}
