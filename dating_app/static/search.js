@@ -1,11 +1,39 @@
 $('#searchForm')
     .form({
         fields: {
-            email: 'email',
-            // name: '',
-            min_age: 'integer[18..64]',
-            min_age: 'different[max_age]',
-            max_age: 'integer[18..64]',
+            email: {
+                identifier: 'email',
+                optional: true,
+                rules: [
+                    {
+                        type: 'email',
+                    }
+                ]
+            },
+            min_age: {
+                identifier: 'min_age',
+                optional: true,
+                rules: [
+                    {
+                        type: 'integer[18..64]',
+                    },
+                    {
+                        type: 'different[max_age]'
+                    }
+                ]
+            },
+            max_age: {
+                identifier: 'min_age',
+                optional: true,
+                rules: [
+                    {
+                        type: 'integer[18..64]',
+                    },
+                    {
+                        type: 'different[min_age]'
+                    }
+                ]
+            },
         }
     })
     .api({
