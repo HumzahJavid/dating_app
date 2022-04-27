@@ -1,21 +1,15 @@
-<!DOCTYPE html>
+{% extends "base.html" %}
+{% block head %} {% include 'head.html' %} {% endblock head %}
 
-<html>
-
-<head>
-    {% include 'head.html' %}
-</head>
-
-<body>
-    <div class="header">
-        <!-- menu  -->
-        <div class="ui secondary menu">
-            <a class="item">
-                <i class="icons">
-                    <i class="huge heart outline icon brand"></i> <i
-                        class="vertically flipped large brand fire icon"></i>
-                </i>
-                <span class="ui big text brand">Brand</span>
+{% block content %}
+<div class="header">
+    <!-- menu  -->
+    <div class="ui secondary menu">
+        <a class="item">
+            <i class="icons">
+                <i class="huge heart outline icon brand"></i> <i class="vertically flipped large brand fire icon"></i>
+            </i>
+            <span class="ui big text brand">Brand</span>
 
             </a>
             <a class="item">
@@ -65,13 +59,9 @@
         </div>
     </div>
 
-    <!-- login modal -->
-    {% include 'login_modal.html' %}
+{% include 'login_modal.html' %}
 
-    <!-- registration modal -->
-    {% include 'registration_modal.html' %}
+{% include 'registration_modal.html' %}
 
-    <script src="static/index.js"></script>
-</body>
-
-</html>
+<script src="static/index.js"></script>
+{% endblock %}
