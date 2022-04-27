@@ -53,6 +53,12 @@ async def read_item(request: Request, item_id: int):
     )
 
 
+# @app.get("/")
+@api_router.get("/searchpage", status_code=200)
+async def search_page(request: Request):
+    return templates.TemplateResponse("search.html", {"request": request})
+
+
 @api_router.post(
     "/login",
     status_code=status.HTTP_200_OK,
