@@ -43,7 +43,14 @@ $('#searchForm')
         method: 'GET',
         serializeForm: true,
         beforeSend: function (settings) {
-            console.log(settings)
+            if (settings.data["min_age"] == "") {
+                settings.data["min_age"] = 18
+            }
+            if (settings.data["max_age"] == "") {
+                settings.data["max_age"] = 64
+            }
+
+            console.log(settings.data)
             return settings
         },
         onResponse: function (response) {
