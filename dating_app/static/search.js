@@ -12,7 +12,9 @@ $('#searchForm')
             },
             min_age: {
                 identifier: 'min_age',
-                optional: true,
+                // optional is implied with depends (non empty field)
+                // optional: true,
+                depends: 'max_age',
                 rules: [
                     {
                         type: 'integer[18..64]',
@@ -23,8 +25,8 @@ $('#searchForm')
                 ]
             },
             max_age: {
-                identifier: 'min_age',
-                optional: true,
+                identifier: 'max_age',
+                depends: 'min_age',
                 rules: [
                     {
                         type: 'integer[18..64]',
