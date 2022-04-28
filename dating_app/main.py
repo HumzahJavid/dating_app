@@ -134,6 +134,12 @@ async def search(
     gender: Optional[str] = None,
 ):
 
+    # Convert potential empty string variables to None.
+    # None is more compatible with mongo than empty strings
+    fields = [email, name, gender]
+    # https://stackoverflow.com/questions/4260280/if-else-in-a-list-comprehension
+    processed_fields = [element if element else None for element in fields]
+    email, name, gender = processed_fields
     # if search by email, redirect to find_one by email endpoint?
 
     # initialise to run server side validation
