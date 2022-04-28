@@ -65,8 +65,14 @@
     <div class="ui segment">
         <div class="field">
             <label>Search logic</label>
-            <div class="ui left input">
-                <input type="text" name="search_type" placeholder="and">
+            <div class="ui selection dropdown">
+                <input type="hidden" name="search_type">
+                <i class="dropdown icon"></i>
+                <div class="default text">Search logic</div>
+                <div class="menu">
+                    <div class="item" data-value="and">AND</div>
+                    <div class="item" data-value="or">OR</div>
+                </div>
             </div>
         </div>
 

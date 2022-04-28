@@ -1,6 +1,8 @@
 $('#searchForm')
     .form({
         fields: {
+            // search_type
+            search_type: 'empty',
             email: {
                 identifier: 'email',
                 optional: true,
