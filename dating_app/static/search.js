@@ -70,9 +70,15 @@ $('#searchForm')
 
 
 function create_card(name, age, gender) {
+    image_str = ' <img src = "/static/images/image.png">'
+    if (gender == "male") {
+        image_str = ' <img src = "/static/images/steve.jpg">'
+    } else if (gender == "female") {
+        image_str = ' <img src = "/static/images/stevie.jpg">'
+    }
     str = '' + '<div class="ui card">'
         + '<div class="image">'
-        + ' <img src = "/static/images/image.png">'
+        + image_str
         + '</div>'
         // + '<div> result </div >'
         + '<div class="content">'
