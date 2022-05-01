@@ -53,6 +53,12 @@ async def read_item(request: Request, item_id: int):
     )
 
 
+# @app.get("/")
+@api_router.get("/searchpage", status_code=200)
+async def search_page(request: Request):
+    return templates.TemplateResponse("search.html", {"request": request})
+
+
 @api_router.post(
     "/login",
     status_code=status.HTTP_200_OK,
@@ -128,6 +134,12 @@ async def search(
     gender: Optional[str] = None,
 ):
 
+    # Convert potential empty string variables to None.
+    # None is more compatible with mongo than empty strings
+    fields = [email, name, gender]
+    # https://stackoverflow.com/questions/4260280/if-else-in-a-list-comprehension
+    processed_fields = [element if element else None for element in fields]
+    email, name, gender = processed_fields
     # if search by email, redirect to find_one by email endpoint?
 
     # initialise to run server side validation
@@ -141,9 +153,8 @@ async def search(
     )
 
     found_users = await services.search_users(mongo.mongodb, search_criteria)
-    print(f"api result = {found_users}")
-
-    return found_users
+    response = {"data": found_users, "length": len(found_users)}
+    return response
 
 
 app.include_router(api_router)

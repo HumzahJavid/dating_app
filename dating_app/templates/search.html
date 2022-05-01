@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+<div class="header">
+    <!-- menu  -->
+    <div class="ui secondary menu">
+        <a class="item">
+            <i class="icons">
+                <i class="huge heart outline icon brand"></i> <i class="vertically flipped large brand fire icon"></i>
+            </i>
+            <span class="ui big text brand">Brand</span>
+
+        </a>
+        <a class="item">
+            Menu item 2
+        </a>
+        <a class="item">
+            Menu item 3
+        </a>
+        <div class="right menu">
+            <!-- the language choice button -->
+            <div class="item">
+                <div class="ui floating dropdown labeled search icon button">
+                    <i class="world icon"></i>
+                    <span class="text">English</span>
+                    <div class="menu">
+                        <div class="item">Arabic</div>
+                        <div class="item">Chinese</div>
+                        <div class="item">Danish</div>
+                        <div class="item">Dutch</div>
+                        <div class="item">English</div>
+                        <div class="item">French</div>
+                        <div class="item">German</div>
+                        <div class="item">Greek</div>
+                        <div class="item">Hungarian</div>
+                        <div class="item">Italian</div>
+                        <div class="item">Japanese</div>
+                        <div class="item">Korean</div>
+                        <div class="item">Lithuanian</div>
+                        <div class="item">Persian</div>
+                        <div class="item">Polish</div>
+                        <div class="item">Portuguese</div>
+                        <div class="item">Russian</div>
+                        <div class="item">Spanish</div>
+                        <div class="item">Swedish</div>
+                        <div class="item">Turkish</div>
+                        <div class="item">Vietnamese</div>
+                    </div>
+                </div>
+                <a class="ui item" id="loginButton">
+                    Login
+                </a>
+                <a class="ui item" id="logoutButton">
+                    Logout
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h2 style="text-align: center;"> Search page </h2>
+
+<form class="ui form" id="searchForm">
+    <div class="ui segment">
+        <div class="field">
+            <label>Search logic</label>
+            <div class="ui selection dropdown">
+                <input type="hidden" name="search_type">
+                <i class="dropdown icon"></i>
+                <div class="default text">Search logic</div>
+                <div class="menu">
+                    <div class="item" data-value="and">AND</div>
+                    <div class="item" data-value="or">OR</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- email  -->
+        <div class="field">
+            <label>Email</label>
+            <div class="ui left icon input">
+                <i class="user icon"></i>
+                <input type="email" name="email" placeholder="jdoe@example.com">
+            </div>
+        </div>
+
+        <!-- name -->
+        <div class="field">
+            <label>Name</label>
+            <div class="ui left input">
+                <input type="text" name="name" placeholder="Jane Doe">
+            </div>
+        </div>
+
+        <!-- min/max age -->
+        <div class="fields">
+            <div class="field">
+                <label>Minimum age</label>
+                <div class="ui left input">
+                    <input type="number" name="min_age" placeholder="18">
+                </div>
+            </div>
+            <div class="field">
+                <label>Maximum age</label>
+                <div class="ui left input">
+                    <input type="number" name="max_age" placeholder="64">
+                </div>
+            </div>
+        </div>
+
+        <!-- gender  -->
+        <div class="field">
+            <label>Gender</label>
+            <div class="ui selection dropdown">
+                <input type="hidden" name="gender">
+                <i class="dropdown icon"></i>
+                <div class="default text">Any</div>
+                <div class="menu">
+                    <div class="item" data-value="female">Female</div>
+                    <div class="item" data-value="male">Male</div>
+                    <div class="item" data-value="other">Other</div>
+                </div>
+            </div>
+        </div>
+        <div class="brand ui fluid large primary submit button">Search</div>
+        <div class="ui error message"></div>
+    </div>
+</form>
+
+
+
+<script src="static/index.js"></script>
+<script src="static/search.js"></script>
+{% endblock %}
