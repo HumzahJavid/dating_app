@@ -56,7 +56,39 @@ $('#searchForm')
             return settings
         },
         onResponse: function (response) {
-            console.log(response);
-            return response
+            $('body').append("<h2> Search results </h2>");
+
+            for (let i = 0; i < response.length; i++) {
+                card_name = response["data"][i]["name"]
+                card_age = response["data"][i]["age"]
+                card_gender = response["data"][i]["gender"]
+                card = create_card(card_name, card_age, card_gender)
+                $('body').append(card);
+            }
         },
     });
+
+
+function create_card(name, age, gender) {
+    str = '' + '<div class="ui card">'
+        + '<div class="image">'
+        + ' <img src = "/static/images/image.png">'
+        + '</div>'
+        // + '<div> result </div >'
+        + '<div class="content">'
+        + ' <a class="header">' + name + '</a>'
+        + '  <div class= "description">'
+
+        + '   <div class="card_age">'
+        + '    Age: ' + age
+        + '   </div>'
+
+        + '   <div class="card_gender">'
+        + '    Gender: ' + gender
+        + '   </div>'
+
+        + '  </div>' // description
+        + '</div>' // content
+        + '</div>' // ui card
+    return str
+}
