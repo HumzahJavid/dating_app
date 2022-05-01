@@ -153,9 +153,8 @@ async def search(
     )
 
     found_users = await services.search_users(mongo.mongodb, search_criteria)
-    print(f"api result = {found_users}")
-
-    return found_users
+    response = {"data": found_users, "length": len(found_users)}
+    return response
 
 
 app.include_router(api_router)
