@@ -1,9 +1,10 @@
 from pathlib import Path
-from typing import List, Optional
+from typing import Any, Dict, List, Optional
 
 from fastapi import APIRouter, FastAPI, Form, Request, Response, status
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
+from pydantic import EmailStr
 
 import dating_app.services as services
 from dating_app.db.database import MongoDB
@@ -155,6 +156,51 @@ async def search(
     found_users = await services.search_users(mongo.mongodb, search_criteria)
     response = {"data": found_users, "length": len(found_users)}
     return response
+
+
+@api_router.get(
+    "/me",
+    status_code=status.HTTP_200_OK,
+    response_description="View active users profile",
+)
+async def view_user_me(request: Request):
+    current_user = await services.get_current_user(mongo.mongodb)
+    return templates.TemplateResponse(
+        "edit_profile.html", {"request": request, "user": current_user}
+    )
+
+
+@api_router.put(
+    "/me",
+    status_code=status.HTTP_200_OK,
+    response_description="Edit active users profile",
+)
+async def update_user_me(
+    # *,
+    email: Optional[EmailStr] = Form(None),
+    password: Optional[str] = Form(None),
+    name: Optional[str] = Form(None),
+    age: Optional[int] = Form(None),
+    gender: Optional[str] = Form(None),
+) -> Any:
+    """
+    Update own user.
+    """
+    user_in: Dict[str, Any] = {}
+    if email is not None:
+        user_in["email"] = email
+    if password is not None:
+        user_in["password"] = password
+    if name is not None:
+        user_in["name"] = name
+    if age is not None:
+        user_in["age"] = age
+    if gender is not None:
+        user_in["gender"] = gender
+
+    current_user = await services.get_current_user(mongo.mongodb)
+    update_response = await services.update_user(mongo.mongodb, current_user, user_in)
+    return update_response
 
 
 app.include_router(api_router)

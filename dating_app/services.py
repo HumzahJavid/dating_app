@@ -133,6 +133,20 @@ async def search_users(db, search: UserSearch):
     return search_results
 
 
+async def update_user(db, current_user, user_to_update):
+    # find via id as user maybe updating email
+    update_id = current_user["_id"]
+    print("updating user id ", update_id)
+    update_result = await db["users"].update_one(
+        {"_id": update_id}, {"$set": user_to_update}
+    )
+
+    if update_result.modified_count == 1:
+        return {"success:200"}
+    else:
+        return {"result ": update_result.raw_result}
+
+
 def mongo_logical_operator(operator):
     """
     Converts logical operators 'and' / 'or' string to mongo compatible operators
