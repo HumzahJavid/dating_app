@@ -70,6 +70,8 @@ good-names = [ "i", "j", "k", "e", "df", "n", "t",]
 
 [tool.pytest.ini_options]
 env = [ "PY_COLORS = 1",]
+norecursedirs = "mongodb/*"
+
 
 [tool.poetry.dependencies.uvicorn]
 extras = [ "standard",]

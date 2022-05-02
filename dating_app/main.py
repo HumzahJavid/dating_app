@@ -1,5 +1,5 @@
 from pathlib import Path
-from typing import Any, List, Optional
+from typing import Any, Dict, List, Optional
 
 from fastapi import APIRouter, FastAPI, Form, Request, Response, status
 from fastapi.staticfiles import StaticFiles
@@ -186,7 +186,7 @@ async def update_user_me(
     """
     Update own user.
     """
-    user_in = {}
+    user_in: Dict[str, Any] = {}
     if email is not None:
         user_in["email"] = email
     if password is not None:
