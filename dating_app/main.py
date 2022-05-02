@@ -157,6 +157,15 @@ async def search(
     return response
 
 
+@api_router.get(
+    "/me",
+    status_code=status.HTTP_200_OK,
+    response_description="View active users profile",
+)
+async def view_user_me():
+    return await services.get_current_user(mongo.mongodb)
+
+
 app.include_router(api_router)
 
 
