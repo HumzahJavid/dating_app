@@ -5,7 +5,6 @@
 <h2 style="text-align: center;"> Edit profile </h2>
 <form class="ui form" id="editForm">
     <div class="ui  segment">
-        <!-- user_in = {email: email, name: name, age: age, password: password, gender: gender} -->
 
         <div class="field">
             <label>Email</label>
@@ -32,7 +31,7 @@
         <div class="field">
             <label>Age</label>
             <div class="ui left input">
-                <input type="number" name="Age" placeholder="18" , value="{{ user.age }}">
+                <input type="number" name="age" placeholder="18" , value="{{ user.age }}">
             </div>
         </div>
 
@@ -54,5 +53,8 @@
         <div class="brand ui fluid large primary submit button">Edit</div>
     </div>
 </form>
+<script src="static/index.js"></script>
+<script src="static/edit.js"></script>
+
 
 {% endblock %}
