@@ -162,8 +162,11 @@ async def search(
     status_code=status.HTTP_200_OK,
     response_description="View active users profile",
 )
-async def view_user_me():
-    return await services.get_current_user(mongo.mongodb)
+async def view_user_me(request: Request):
+    current_user = await services.get_current_user(mongo.mongodb)
+    return templates.TemplateResponse(
+        "edit_profile.html", {"request": request, "user": current_user}
+    )
 
 
 app.include_router(api_router)

@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2 style="text-align: center;"> Edit profile </h2>
+<form class="ui form" id="editForm">
+    <div class="ui  segment">
+        <!-- user_in = {email: email, name: name, age: age, password: password, gender: gender} -->
+
+        <div class="field">
+            <label>Email</label>
+            <div class="ui left icon input">
+                <i class="user icon"></i>
+                <input type="text" name="email" placeholder="E-mail address" , value="{{ user.email }}">
+            </div>
+        </div>
+        <div class="field">
+            <label>Password</label>
+            <div class="ui left icon input">
+                <i class="lock icon"></i>
+                <input type="password" name="password" placeholder="Password" , value="{{ user.password }}">
+            </div>
+        </div>
+
+        <div class="field">
+            <label>Name</label>
+            <div class="ui left input">
+                <input type="text" name="name" placeholder="Jane Doe" , value="{{ user.name }}">
+            </div>
+        </div>
+
+        <div class="field">
+            <label>Age</label>
+            <div class="ui left input">
+                <input type="number" name="Age" placeholder="18" , value="{{ user.age }}">
+            </div>
+        </div>
+
+        <div class="field">
+            <label>Gender</label>
+            <div class="ui selection dropdown">
+                <input type="hidden" name="gender">
+                <i class="dropdown icon"></i>
+                <div class="default text">Any</div>
+                <div class="menu">
+
+                    <div class="item" data-value="female">Female</div>
+                    <div class="item" data-value="male">Male</div>
+                    <div class="item" data-value="other">Other</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="brand ui fluid large primary submit button">Edit</div>
+    </div>
+</form>
+
+{% endblock %}
