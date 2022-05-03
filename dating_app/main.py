@@ -87,6 +87,7 @@ async def login(
 @api_router.post("/logout", status_code=status.HTTP_200_OK)
 async def logout(response: Response):
     logout_response = await services.logout(mongo.mongodb)
+    print(logout_response)
     return logout_response
 
 
