@@ -111,10 +111,12 @@ class RegisterResponseBase(RegisterResponse):
 
 class LoginResponse(BaseModel):
     message: str
+    email: Optional[str]
 
 
 class LoginResponse200(LoginResponse):
     message = "Login successful."
+    email: str
 
 
 class LoginResponse401(LoginResponse):

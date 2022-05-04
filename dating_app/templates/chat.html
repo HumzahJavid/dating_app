@@ -15,7 +15,13 @@
     <ul id='messages'>
     </ul>
     <script>
-        var client_id = Date.now()
+        // if user logged in use email else anon id
+        if (sessionStorage.getItem('user')) {
+            var client_id = sessionStorage.getItem('user')
+        } else {
+            var client_id = Date.now()
+        }
+
         document.querySelector("#ws-id").textContent = client_id;
         var ws = new WebSocket(`ws://localhost:8001/ws/${client_id}`);
         ws.onmessage = function (event) {

@@ -30,6 +30,7 @@
                             showProgress: 'top'
                         });
                         sessionStorage.removeItem('loggedIn');
+                        sessionStorage.removeItem('user');
                         swap_buttons();
                     },
                 });
@@ -65,6 +66,7 @@
                         showProgress: 'top'
                     });
                     sessionStorage.setItem('loggedIn', true)
+                    sessionStorage.setItem('user', response.email)
                     console.log("deactivating login (and reg)")
                     swap_buttons()
                 },

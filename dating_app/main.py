@@ -225,7 +225,7 @@ async def chat_page(request: Request):
 
 
 @app.websocket("/ws/{client_id}")
-async def websocket_endpoint(websocket: WebSocket, client_id: int):
+async def websocket_endpoint(websocket: WebSocket, client_id: str):
     print(websocket)
     print("client id ")
     print(client_id)

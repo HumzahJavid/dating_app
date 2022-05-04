@@ -61,7 +61,7 @@ async def authenticate_user(db, user: UserModel):
         return LoginResponse401()
 
     db["users"].update_one({"email": user_json["email"]}, {"$set": {"is_active": True}})
-    return LoginResponse200()
+    return LoginResponse200(email=user_json["email"])
 
 
 async def get_current_user(db):
