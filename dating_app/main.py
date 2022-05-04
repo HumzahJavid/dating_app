@@ -226,18 +226,19 @@ async def chat_page(request: Request):
 
 @app.websocket("/ws/{client_id}")
 async def websocket_endpoint(websocket: WebSocket, client_id: str):
-    print(websocket)
-    print("client id ")
-    print(client_id)
+    print("client id ", client_id)
     await manager.connect(websocket)
+    response = {"sender": client_id, "message": "got connected"}
+    await manager.broadcast(response)
     try:
         while True:
-            data = await websocket.receive_text()
-            await manager.send_personal_message(f"You wrote: {data}", websocket)
-            await manager.broadcast(f"Client #{client_id} says: {data}")
+            data = await websocket.receive_json()
+            print(f"data server side is {data}")
+            await manager.broadcast(data)
     except WebSocketDisconnect:
         manager.disconnect(websocket)
-        await manager.broadcast(f"Client #{client_id} left the chat")
+        response["message"] = "left"
+        await manager.broadcast(response)
 
 
 app.include_router(api_router)

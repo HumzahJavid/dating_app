@@ -2,42 +2,35 @@
 <html>
 
 <head>
-    <title>Chat</title>
+    {% block head %} {% include 'head.html' %} {% endblock head %}
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', path='/chat.css') }}">
 </head>
 
 <body>
-    <h1>WebSocket Chat</h1>
-    <h2>Your ID: <span id="ws-id"></span></h2>
-    <form action="" onsubmit="sendMessage(event)">
-        <input type="text" id="messageText" autocomplete="off" />
-        <button>Send</button>
-    </form>
-    <ul id='messages'>
-    </ul>
-    <script>
-        // if user logged in use email else anon id
-        if (sessionStorage.getItem('user')) {
-            var client_id = sessionStorage.getItem('user')
-        } else {
-            var client_id = Date.now()
-        }
+    <div class="chat-body centered card">
+        <div class="card-body">
+            <h4 class="card-title text-center"> Chat App </h4>
+            <hr>
 
-        document.querySelector("#ws-id").textContent = client_id;
-        var ws = new WebSocket(`ws://localhost:8001/ws/${client_id}`);
-        ws.onmessage = function (event) {
-            var messages = document.getElementById('messages')
-            var message = document.createElement('li')
-            var content = document.createTextNode(event.data)
-            message.appendChild(content)
-            messages.appendChild(message)
-        };
-        function sendMessage(event) {
-            var input = document.getElementById("messageText")
-            ws.send(input.value)
-            input.value = ''
-            event.preventDefault()
-        }
-    </script>
+            <div class="content scroller">
+                <div id="messages">
+                </div>
+            </div>
+
+            <!-- attach this to bottom of parent div  -->
+            <div class="extra content">
+                <form class="form" id="chat-form" action="">
+                    <div class="inline fields">
+                        <div class="ui left input">
+                            <input type="text" name="message" placeholder="Write your message">
+                        </div>
+                        <button id="send" type="submit" class="button ui primary">Send</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="static/chat.js"></script>
 </body>
 
 </html>
