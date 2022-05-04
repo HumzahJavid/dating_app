@@ -1,12 +1,22 @@
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-from fastapi import APIRouter, FastAPI, Form, Request, Response, status
+from fastapi import (
+    APIRouter,
+    FastAPI,
+    Form,
+    Request,
+    Response,
+    WebSocket,
+    WebSocketDisconnect,
+    status,
+)
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from pydantic import EmailStr
 
 import dating_app.services as services
+from dating_app.chat.ConnectionManager import ConnectionManager
 from dating_app.db.database import MongoDB
 from dating_app.schemas.User import (
     LoginResponse,
@@ -202,6 +212,32 @@ async def update_user_me(
     current_user = await services.get_current_user(mongo.mongodb)
     update_response = await services.update_user(mongo.mongodb, current_user, user_in)
     return update_response
+
+
+# chat routes
+
+manager = ConnectionManager()
+
+
+@api_router.get("/chat", status_code=200)
+async def chat_page(request: Request):
+    return templates.TemplateResponse("chat.html", {"request": request})
+
+
+@app.websocket("/ws/{client_id}")
+async def websocket_endpoint(websocket: WebSocket, client_id: int):
+    print(websocket)
+    print("client id ")
+    print(client_id)
+    await manager.connect(websocket)
+    try:
+        while True:
+            data = await websocket.receive_text()
+            await manager.send_personal_message(f"You wrote: {data}", websocket)
+            await manager.broadcast(f"Client #{client_id} says: {data}")
+    except WebSocketDisconnect:
+        manager.disconnect(websocket)
+        await manager.broadcast(f"Client #{client_id} left the chat")
 
 
 app.include_router(api_router)
