@@ -1,38 +1,12 @@
-<!DOCTYPE html>
-<html>
+{% extends "base.html" %}
+{% block content %}
 
-<head>
-    {% block head %} {% include 'head.html' %} {% endblock head %}
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', path='/chat.css') }}">
-</head>
+this is some information
 
-<body>
-    <div class="chat-body centered card">
-        <div class="header">
-            <div id="ws-id"></div>
-            <h4 class="card-title text-center"> Chat App </h4>
-        </div>
-        <hr>
-        <div class="card-body">
-            <div class="content scroller">
-                <div id="messages">
-                </div>
-            </div>
+{% include 'chat_modal.html' %}
+<script>
+    $('#chatModal').modal('show')
+</script>
 
-            <!-- attach this to bottom of parent div  -->
-            <div class="extra content">
-                <form class="form" id="chat-form" action="">
-                    <div class="inline fields">
-                        <div class="ui left input">
-                            <input type="text" name="message" placeholder="Write your message">
-                        </div>
-                        <button id="send" type="submit" class="button ui primary">Send</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    <script src="static/chat.js"></script>
-</body>
 
-</html>
+{% endblock content %}
