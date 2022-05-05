@@ -62,20 +62,26 @@ $('#searchForm')
                 card_name = response["data"][i]["name"]
                 card_age = response["data"][i]["age"]
                 card_gender = response["data"][i]["gender"]
-                card = create_card(card_name, card_age, card_gender)
+                card_email = response["data"][i]["email"]
+                card = create_card(card_name, card_age, card_gender, card_email)
                 $('body').append(card);
             }
         },
     });
 
 
-function create_card(name, age, gender) {
-    image_str = ' <img src = "/static/images/image.png">'
+function create_card(name, age, gender, email) {
+    console.log("creating card with email" + email)
+    picture_file = "/static/images/image.png"
     if (gender == "male") {
+        picture_file = "/static/images/steve.jpg"
         image_str = ' <img src = "/static/images/steve.jpg">'
     } else if (gender == "female") {
-        image_str = ' <img src = "/static/images/stevie.jpg">'
+        picture_file = "/static/images/stevie.jpg"
+        // image_str = '<img src = "/static/images/stevie.jpg" data-email="' + email + '">'
     }
+    image_str = ` <img class = "imageChat" src = "${picture_file}" data-email = "${email}">`
+
     str = '' + '<div class="ui card">'
         + '<div class="image">'
         + image_str
@@ -98,3 +104,15 @@ function create_card(name, age, gender) {
         + '</div>' // ui card
     return str
 }
+
+$(document).on('click', '.imageChat', function (e) {
+    email = e.currentTarget.dataset["email"]
+    console.log("click image via doc for " + email);
+    // post to fastapi to start a chat
+    // senders email from sessionstorage
+    // recepient email from this method
+    // $.post(this.href, function (data) {
+    //     $("#someContainer").html(data);
+    // })
+
+});
