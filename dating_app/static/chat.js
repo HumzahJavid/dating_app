@@ -5,7 +5,7 @@ $(document).on('click', '.imageChat', function (e) {
     client_id = sessionStorage.getItem('user')
     // call to initiate_chat returns a chat_session_id
     $.ajax({
-        url: '/initiate_chat',
+        url: 'api/chat/initiate_chat',
         type: 'post',
         dataType: 'json',
         contentType: 'application/json',

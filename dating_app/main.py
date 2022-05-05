@@ -3,7 +3,6 @@ from typing import Any, Dict, List, Optional
 
 from fastapi import (
     APIRouter,
-    Body,
     FastAPI,
     Form,
     Request,
@@ -17,7 +16,8 @@ from fastapi.templating import Jinja2Templates
 from pydantic import EmailStr
 
 import dating_app.services as services
-from dating_app.chat.ConnectionManager import ConnectionManager
+from dating_app.api.chat import chat
+from dating_app.core.ConnectionManager import ConnectionManager
 from dating_app.db.database import MongoDB
 from dating_app.schemas.User import (
     LoginResponse,
@@ -215,29 +215,7 @@ async def update_user_me(
     return update_response
 
 
-# chat routes
-
 manager = ConnectionManager()
-
-
-@api_router.get("/chat", status_code=200)
-async def chat_page(request: Request):
-    return templates.TemplateResponse("chat.html", {"request": request})
-
-
-@api_router.post("/initiate_chat", status_code=status.HTTP_201_CREATED)
-async def initiate_chat(user_initiating_id=Body(...), user_receiving_id=Body(...)):
-    print("initiating chat?")
-    # chat_session_id = user_initiating_id + "-" + user_receiving_id
-    chat_session_id = create_chat_session_id(user_initiating_id, user_receiving_id)
-    print("returning", chat_session_id)
-    return chat_session_id
-
-
-def create_chat_session_id(id1, id2):
-    id_list = [id1, id2]
-    id_list.sort()
-    return id_list[0] + "-" + id_list[1]
 
 
 @app.websocket("/ws/{client_id}")
@@ -257,6 +235,7 @@ async def websocket_endpoint(websocket: WebSocket, client_id: str):
         await manager.broadcast(response)
 
 
+api_router.include_router(chat.router, prefix="/api/chat", tags=["chat"])
 app.include_router(api_router)
 
 
