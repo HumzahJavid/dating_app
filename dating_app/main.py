@@ -225,7 +225,7 @@ async def chat_page(request: Request):
     return templates.TemplateResponse("chat.html", {"request": request})
 
 
-@api_router.post("/initiateChat", status_code=status.HTTP_201_CREATED)
+@api_router.post("/initiate_chat", status_code=status.HTTP_201_CREATED)
 async def initiate_chat(user_initiating_id=Body(...), user_receiving_id=Body(...)):
     print("initiating chat?")
     # chat_session_id = user_initiating_id + "-" + user_receiving_id
