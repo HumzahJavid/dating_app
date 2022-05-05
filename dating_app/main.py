@@ -1,23 +1,14 @@
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
-from fastapi import (
-    APIRouter,
-    FastAPI,
-    Form,
-    Request,
-    Response,
-    WebSocket,
-    WebSocketDisconnect,
-    status,
-)
+from fastapi import APIRouter, FastAPI, Form, Request, Response, status
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
 from pydantic import EmailStr
 
 import dating_app.services as services
 from dating_app.api.chat import chat
-from dating_app.core.ConnectionManager import ConnectionManager
+from dating_app.core import websocket
 from dating_app.db.database import MongoDB
 from dating_app.schemas.User import (
     LoginResponse,
@@ -215,26 +206,7 @@ async def update_user_me(
     return update_response
 
 
-manager = ConnectionManager()
-
-
-@app.websocket("/ws/{client_id}")
-async def websocket_endpoint(websocket: WebSocket, client_id: str):
-    print("client id ", client_id)
-    await manager.connect(websocket)
-    response = {"sender": client_id, "message": "got connected"}
-    await manager.broadcast(response)
-    try:
-        while True:
-            data = await websocket.receive_json()
-            print(f"data server side is {data}")
-            await manager.broadcast(data)
-    except WebSocketDisconnect:
-        manager.disconnect(websocket)
-        response["message"] = "left"
-        await manager.broadcast(response)
-
-
+api_router.include_router(websocket.router)
 api_router.include_router(chat.router, prefix="/api/chat", tags=["chat"])
 app.include_router(api_router)
 
