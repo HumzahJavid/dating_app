@@ -104,15 +104,3 @@ function create_card(name, age, gender, email) {
         + '</div>' // ui card
     return str
 }
-
-$(document).on('click', '.imageChat', function (e) {
-    email = e.currentTarget.dataset["email"]
-    console.log("click image via doc for " + email);
-    // post to fastapi to start a chat
-    // senders email from sessionstorage
-    // recepient email from this method
-    // $.post(this.href, function (data) {
-    //     $("#someContainer").html(data);
-    // })
-
-});
