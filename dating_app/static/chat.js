@@ -7,6 +7,7 @@ $(document).ready(function () {
     } else {
         client_id = Date.now()
     }
+    $('#ws-id').text(client_id);
     var socket = new WebSocket(`ws://localhost:8001/ws/${client_id}`);
     socket.onmessage = function (event) {
         console.log("data: ")
