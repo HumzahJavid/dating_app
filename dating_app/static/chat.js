@@ -1,14 +1,43 @@
+$(document).on('click', '.imageChat', function (e) {
+    // initate chat by clicking on user profiles
+    email = e.currentTarget.dataset["email"];
+    console.log("click image via doc for " + email);
+    client_id = sessionStorage.getItem('user')
+    // call to initiate_chat returns a chat_session_id
+    $.ajax({
+        url: '/initiate_chat',
+        type: 'post',
+        dataType: 'json',
+        contentType: 'application/json',
+        data: JSON.stringify({ user_initiating_id: client_id, user_receiving_id: email }),
+        success: function (chat_session_id) {
+            console.log("created chat chat_session_id?", chat_session_id);
+            console.log("showing modal")
+            $('#chatModal').modal('show')
+            socket = create_socket(chat_session_id)
+        }
+    });
+});
 
-$(document).ready(function () {
-    // if logged in get userid, else random id
-    var client_id;
-    if (sessionStorage.getItem('user')) {
-        client_id = sessionStorage.getItem('user')
-    } else {
-        client_id = Date.now()
+// user submits message, is sent to websocket
+$("#chat-form").on("submit", function (e) {
+    e.preventDefault();
+    var message = $("#chat-input").val();
+    if (message) {
+        data = {
+            "sender": client_id,
+            "message": message
+        };
+        socket.send(JSON.stringify(data));
+        $("input").val("");
+        document.cookie = 'X-Authorization=; path=/;';
     }
-    $('#ws-id').text(client_id);
-    var socket = new WebSocket(`ws://localhost:8001/ws/${client_id}`);
+});
+
+// create websocket (for a chat_session) and attach onmessage listener
+function create_socket(chat_session_id) {
+    var socket = new WebSocket(`ws://localhost:8001/ws/${chat_session_id}`);
+
     socket.onmessage = function (event) {
         console.log("data: ")
         console.log(event.data)
@@ -22,18 +51,5 @@ $(document).ready(function () {
         var content = "<p><strong>" + sender + " </strong> <span> " + message + "</span></p>";
         parent.append(content);
     };
-    $("#chat-form").on("submit", function (e) {
-        e.preventDefault();
-        var message = $("input").val();
-        console.log("message is " + message)
-        if (message) {
-            data = {
-                "sender": client_id,
-                "message": message
-            };
-            socket.send(JSON.stringify(data));
-            $("input").val("");
-            document.cookie = 'X-Authorization=; path=/;';
-        }
-    });
-});
+    return socket
+}
