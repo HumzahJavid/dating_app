@@ -29,6 +29,8 @@
                             pauseOnHover: false,
                             showProgress: 'top'
                         });
+                        sessionStorage.removeItem('loggedIn');
+                        sessionStorage.removeItem('user');
                         swap_buttons();
                     },
                 });
@@ -63,6 +65,8 @@
                         pauseOnHover: false,
                         showProgress: 'top'
                     });
+                    sessionStorage.setItem('loggedIn', true)
+                    sessionStorage.setItem('user', response.email)
                     console.log("deactivating login (and reg)")
                     swap_buttons()
                 },
@@ -155,7 +159,8 @@
                 .modal('show')
         });
         function swap_buttons() {
-            if ($('#logoutButton').css('display') == 'none') {
+            console.log("swapping buttons");
+            if (sessionStorage.getItem('loggedIn')) {
                 hidden_element = $('#logoutButton');
                 visible_element = $('#loginButton');
             } else {
@@ -164,6 +169,12 @@
             }
             hidden_element.show();
             visible_element.hide();
-
         }
-        window.onload = $('#logoutButton').hide();
+
+        window.addEventListener("beforeunload", (ev) => {
+            $.ajax({
+                type: "POST",
+                url: "/logout"
+            });
+        });
+        window.onload = swap_buttons();//$('#logoutButton').hide();

@@ -7,6 +7,8 @@ from fastapi.templating import Jinja2Templates
 from pydantic import EmailStr
 
 import dating_app.services as services
+from dating_app.api.chat import chat
+from dating_app.core import websocket
 from dating_app.db.database import MongoDB
 from dating_app.schemas.User import (
     LoginResponse,
@@ -87,6 +89,7 @@ async def login(
 @api_router.post("/logout", status_code=status.HTTP_200_OK)
 async def logout(response: Response):
     logout_response = await services.logout(mongo.mongodb)
+    print(logout_response)
     return logout_response
 
 
@@ -203,6 +206,8 @@ async def update_user_me(
     return update_response
 
 
+api_router.include_router(websocket.router)
+api_router.include_router(chat.router, prefix="/api/chat", tags=["chat"])
 app.include_router(api_router)
 
 

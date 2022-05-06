@@ -1,0 +1,25 @@
+{% block chat_modal %}
+
+<div class="ui modal" id="chatModal">
+    <div>Chat ID: <span id="ws-id" style=></span></div>
+    <div class="header" style="text-align:center;">
+        <h4> Chatting with <span id="chat-recipient"></span></h4>
+    </div>
+    <div class="scrolling content">
+        <!-- <p>Very long content goes here</p> -->
+        <div id="messages">
+        </div>
+    </div>
+    <!-- attach this to bottom of parent div  -->
+    <div class="extra content">
+        <form class="form" id="chat-form" action="">
+            <div class="inline fields">
+                <div class="ui left input">
+                    <input type="text" id="chat-input" name="message" placeholder="Write your message">
+                </div>
+                <button id="send" type="submit" class="button ui primary">Send</button>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock chat_modal %}
