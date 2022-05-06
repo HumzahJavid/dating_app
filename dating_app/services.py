@@ -82,9 +82,14 @@ async def logout(db):
 
 
 async def list_users(db):
+    """Return all other users except the logged in one"""
+
+    current_user = await get_current_user(db)
+    print("current users email = ")
+    email = current_user["email"]
+    print(email)
     users = []
-    # find all users except the logged in user
-    users_cursor = db["users"].find({"is_active": {"$nin": [True]}})
+    users_cursor = db["users"].find({"email": {"$not": {"$eq": email}}})
     async for user in users_cursor:
         users.append(user)
     return users
