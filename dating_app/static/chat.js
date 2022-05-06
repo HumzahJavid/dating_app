@@ -12,9 +12,12 @@ $(document).on('click', '.imageChat', function (e) {
         data: JSON.stringify({ user_initiating_id: client_id, user_receiving_id: email }),
         success: function (response) {
             console.log("created chat chat_session_id?", response);
-            $('#chatModal').modal('show')
             chat_session_id = response["chat_session_id"]
             socket = create_socket(chat_session_id)
+
+            $('#chatModal').modal('show')
+            $('#ws-id').text(chat_session_id);
+            $('#chat-recipient').text(chat_session_id.split('-')[1]);
         }
     });
 });
