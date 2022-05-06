@@ -13,7 +13,8 @@ router = APIRouter()
 
 def create_chat_session_id(fields: InitiateChat):
     id_list = [fields.user_initiating_id, fields.user_receiving_id]
-    id_list.sort()
+    # websocket rooms and urls need more design work
+    # id_list.sort()
     return id_list[0] + "-" + id_list[1]
 
 

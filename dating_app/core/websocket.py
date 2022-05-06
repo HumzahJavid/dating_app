@@ -7,10 +7,11 @@ router = APIRouter()
 manager = ConnectionManager()
 
 
-@router.websocket("/ws/{client_id}")
-async def websocket_endpoint(websocket: WebSocket, client_id: str):
+@router.websocket("/ws/{chat_session_id}")
+async def websocket_endpoint(websocket: WebSocket, chat_session_id: str):
     await manager.connect(websocket)
-    response = {"sender": client_id, "message": "got connected"}
+    sender = chat_session_id.split("-")[0]
+    response = {"sender": sender, "message": "started chat"}
     await manager.broadcast(response)
     try:
         while True:
