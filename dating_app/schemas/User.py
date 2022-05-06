@@ -104,22 +104,3 @@ class LoginResponseBase(LoginResponse):
             "200": {"model": LoginResponse200},
             "401": {"model": LoginResponse401},
         }
-
-
-""""
-class Filter(BaseModel):
-    foo: str
-    bar: str
-
-class Payload(BaseModel):
-    baz: str
-    bat: str
-
-def get_payload(payload: Payload):
-    return {}
-
-@router.post('/')
-def test(filter: Filter = Depends(), payload: dict = Depends(get_payload)):
-    pass
-
-"""

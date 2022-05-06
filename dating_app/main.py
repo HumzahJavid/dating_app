@@ -32,20 +32,11 @@ async def shutdown_db_client() -> None:
     await mongo.shutdown_db_client()
 
 
-# @app.get("/")
 @api_router.get("/", status_code=200)
 async def root(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
 
-@api_router.get("/items/{item_id}")
-async def read_item(request: Request, item_id: int):
-    return templates.TemplateResponse(
-        "items.html", {"request": request, "item_id": item_id}
-    )
-
-
-# @app.get("/")
 @api_router.get("/searchpage", status_code=200)
 async def search_page(request: Request):
     return templates.TemplateResponse("search.html", {"request": request})
@@ -79,7 +70,6 @@ async def search(
     # https://stackoverflow.com/questions/4260280/if-else-in-a-list-comprehension
     processed_fields = [element if element else None for element in fields]
     email, name, gender = processed_fields
-    # if search by email, redirect to find_one by email endpoint?
 
     # initialise to run server side validation
     search_criteria: UserSearch = UserSearch(

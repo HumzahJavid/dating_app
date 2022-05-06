@@ -122,7 +122,6 @@ async def search_users(db, search: UserSearch):
 
 
 async def update_user(db, current_user, user_to_update):
-    # find via id as user maybe updating email
     update_id = current_user["_id"]
     print("updating user id ", update_id)
     update_result = await db["users"].update_one(
