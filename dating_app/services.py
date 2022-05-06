@@ -10,32 +10,11 @@ from dating_app.schemas.User import (
 )
 
 
-async def insert_and_display_test_data(client):
-    default_db = client.get_default_database()
-
-    collection_name = default_db["collection_test"]
-    test_doc = {"key_1": "Test field in test doc", "key_2": 42}
-    result = await collection_name.insert_one(test_doc)
-    print(result.inserted_id)
-
-    # display data
-    docs_cursor = collection_name.find()
-    # must specify list length (can be larger than actual number of collections)
-    # result = await docs_cursor.to_list(100)
-    # print(result)
-
-    # https://motor.readthedocs.io/en/stable/api-asyncio/cursors.html#asynciomotorcommandcursor
-    async for doc in docs_cursor:
-        print(doc)
-
-
 async def create_user(db, user: UserCreate) -> RegisterResponse:
     user_json = jsonable_encoder(user)
     db_user = await db["users"].find_one({"email": user_json["email"]})
 
     if db_user:
-        # # This exception is blocking
-        # raise HTTPException(status_code=409, detail="Email already in use")
         return RegisterResponse(
             message="Email already in use.", email=user_json["email"]
         )
@@ -65,6 +44,10 @@ async def authenticate_user(db, user: UserModel):
 
 
 async def get_current_user(db):
+    """Returns the current user"""
+
+    # Have not updated method for multi user (using mongodbsession instances)
+    # Works in some cases not users
     user = await db["users"].find_one({"is_active": True})
     if not user:
         print("Active User not found")
