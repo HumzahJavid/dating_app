@@ -15,3 +15,6 @@ class MongoDB:
     async def shutdown_db_client(self) -> None:
         self.mongodb_client.close()
         self.mongodb = None
+
+    def get_db(self):
+        return self.mongodb

@@ -9,7 +9,7 @@ from pydantic import EmailStr
 import dating_app.services as services
 from dating_app.api.chat import chat
 from dating_app.core import websocket
-from dating_app.db.database import MongoDB
+from dating_app.db import mongo
 from dating_app.schemas.User import (
     LoginResponse,
     LoginResponseBase,
@@ -28,18 +28,15 @@ templates = Jinja2Templates(directory=BASE_PATH / "templates")
 app = FastAPI()
 app.mount("/static", StaticFiles(directory=BASE_PATH / "static"), name="static")
 api_router = APIRouter()
-mongo = MongoDB()
 
 
 @app.on_event("startup")
 async def startup_db_client() -> None:
-    global mongo
     await mongo.startup_db_client()
 
 
 @app.on_event("shutdown")
 async def shutdown_db_client() -> None:
-    global mongo
     await mongo.shutdown_db_client()
 
 
