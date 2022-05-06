@@ -1,7 +1,10 @@
+"""
+MongoModel handles Creating MongoDB compatible pydantic models
+
+https://www.mongodb.com/developer/quickstart/python-quickstart-fastapi/#the-_id-attribute-and-objectids
+"""
 from bson import ObjectId
 from pydantic import BaseModel, Field
-
-# https://www.mongodb.com/developer/quickstart/python-quickstart-fastapi/#the-_id-attribute-and-objectids
 
 
 class PyObjectId(ObjectId):
