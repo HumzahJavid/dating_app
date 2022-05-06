@@ -10,10 +10,10 @@ $(document).on('click', '.imageChat', function (e) {
         dataType: 'json',
         contentType: 'application/json',
         data: JSON.stringify({ user_initiating_id: client_id, user_receiving_id: email }),
-        success: function (chat_session_id) {
-            console.log("created chat chat_session_id?", chat_session_id);
-            console.log("showing modal")
+        success: function (response) {
+            console.log("created chat chat_session_id?", response);
             $('#chatModal').modal('show')
+            chat_session_id = response["chat_session_id"]
             socket = create_socket(chat_session_id)
         }
     });
