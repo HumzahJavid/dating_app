@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from fastapi import APIRouter, Request, status
+from fastapi import APIRouter, status
 from fastapi.templating import Jinja2Templates
 
 from dating_app.schemas.ChatModel import InitiateChat, InitiateChatResponse
@@ -16,11 +16,6 @@ def create_chat_session_id(fields: InitiateChat):
     # websocket rooms and urls need more design work
     # id_list.sort()
     return id_list[0] + "-" + id_list[1]
-
-
-@router.get("/chat", status_code=200)
-async def chat_page(request: Request):
-    return templates.TemplateResponse("chat.html", {"request": request})
 
 
 @router.post(
