@@ -12,7 +12,7 @@
         $(document).on('click', '#logoutButton', function () {
             $('#logoutButton')
                 .api({
-                    url: '/logout',
+                    url: '/api/user/logout',
                     method: 'POST',
                     onResponse: function (response) {
                         console.log("logout response = ");
@@ -37,7 +37,7 @@
         });
         $('#loginForm .submit.button')
             .api({
-                url: '/login',
+                url: '/api/user/login',
                 method: 'POST',
                 serializeForm: true,
                 beforeSend: function (settings) {
@@ -103,7 +103,7 @@
                 }
             })
             .api({
-                url: '/register',
+                url: '/api/user/register',
                 method: 'POST',
                 serializeForm: true,
                 beforeSend: function (settings) {
@@ -174,7 +174,7 @@
         window.addEventListener("beforeunload", (ev) => {
             $.ajax({
                 type: "POST",
-                url: "/logout"
+                url: "/api/user/logout"
             });
         });
         window.onload = swap_buttons();//$('#logoutButton').hide();
