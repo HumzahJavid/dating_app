@@ -45,3 +45,13 @@ def test_google_title(driver):
     title = driver.title
     print(f"{title}")
     assert title == "Google"
+
+
+# test fastapi w/o testclient
+def test_index_gui(driver):
+
+    driver.get("http://127.0.0.1:8001")
+    title = driver.title
+    print(f"{title}")
+
+    assert title == "Dating App"
