@@ -53,6 +53,9 @@ $('#searchForm')
             }
 
             console.log(settings.data)
+            if (document.querySelector("#searchResults")) {
+                document.querySelector("#searchResults").outerHTML = ""
+            }
             return settings
         },
         onResponse: function (response) {
