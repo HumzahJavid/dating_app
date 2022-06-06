@@ -5,6 +5,7 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.chrome.service import Service
 
 from dating_app.main import app
+from pages.index import IndexPage
 from pages.search import SearchPage
 
 
@@ -17,6 +18,28 @@ def client():
 
     with TestClient(app) as client:
         yield client
+
+
+@pytest.fixture
+def test_user_1():
+    return {
+        "email": "test_user_1@email.com",
+        "password": "test_password",
+        "name": "test user1",
+        "age": "25",
+        "gender": "female",
+    }
+
+
+@pytest.fixture
+def test_user_2():
+    return {
+        "email": "test_user_2@email.com",
+        "password": "test_password",
+        "name": "test user2",
+        "age": "25",
+        "gender": "male",
+    }
 
 
 @pytest.fixture
@@ -39,6 +62,24 @@ def driver():
     yield driver
     # teardown driver
     driver.quit()
+
+
+def test_when_login_button_clicked_then_login_modal_form_appears(driver):
+    index_page = IndexPage(driver)
+    index_page.click_login_button()
+    assert index_page.is_login_modal_visible() is True
+
+
+def test_when_user_logs_in_then_success_message_appears(driver, test_user_1):
+    index_page = IndexPage(driver)
+    index_page.click_login_button()
+    index_page.enter_test_username_and_password(
+        test_user_1["email"], test_user_1["password"]
+    )
+    index_page.click_login_form_button()
+    login_response = index_page.get_toast_text()
+    print(login_response)
+    assert login_response == "Login successful."
 
 
 def test_when_search_without_setting_search_logic__then_display_error_message(driver):

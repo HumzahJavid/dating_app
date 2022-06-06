@@ -28,6 +28,7 @@ class SearchPage:
         return self._driver.title
 
     def get_search_results_count(self):
+        # add timer here to prevent no such element exception
         search_results = self._driver.find_element(By.ID, "searchResults")
         number_of_results = len(
             search_results.find_elements(By.CSS_SELECTOR, ".ui.card")
@@ -41,4 +42,5 @@ class SearchPage:
             f"/html/body/form/div/div[1]/div/div[2]/div[@data-value='{search_logic}']"
         )
         or_element = self._driver.find_element(By.XPATH, logic_element_xpath)
+        # add timer here to prevent no such element exception
         or_element.click()

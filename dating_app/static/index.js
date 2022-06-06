@@ -25,6 +25,7 @@ $(document).on('click', '#logoutButton', function () {
                 console.log(xhr);
                 $('body').toast({
                     class: 'success',
+                    displayTime: 5000,
                     message: `${response.message}`,
                     pauseOnHover: false,
                     showProgress: 'top'
@@ -61,6 +62,7 @@ $('#loginForm .submit.button')
             $('#loginModal').modal('hide')
             $('body').toast({
                 class: 'success',
+                displayTime: 5000,
                 message: `${response.message}`,
                 pauseOnHover: false,
                 showProgress: 'top'
