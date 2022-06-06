@@ -1,5 +1,8 @@
 import pytest
 from fastapi.testclient import TestClient
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service
 
 from dating_app.main import app
 from pages.search import SearchPage
@@ -22,9 +25,6 @@ def driver():
 
     :yields: A Chome driven selenium driver
     """
-    from selenium import webdriver
-    from selenium.webdriver.chrome.options import Options
-    from selenium.webdriver.chrome.service import Service
 
     # Setup chrome options
     chrome_options = Options()
@@ -39,15 +39,6 @@ def driver():
     yield driver
     # teardown driver
     driver.quit()
-
-
-# test fastapi w/o testclient
-def test_index_gui(driver):
-    driver.get("http://127.0.0.1:8001")
-    title = driver.title
-    print(f"{title}")
-
-    assert title == "Dating App"
 
 
 def test_when_search_without_setting_search_logic__then_display_error_message(driver):
