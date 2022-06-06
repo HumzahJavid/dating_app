@@ -56,7 +56,7 @@ $('#searchForm')
             return settings
         },
         onResponse: function (response) {
-            $('body').append("<h2> Search results </h2>");
+            $('body').append("<h2 id='searchResults'> Search results </h2>");
 
             for (let i = 0; i < response.length; i++) {
                 card_name = response["data"][i]["name"]
@@ -64,7 +64,8 @@ $('#searchForm')
                 card_gender = response["data"][i]["gender"]
                 card_email = response["data"][i]["email"]
                 card = create_card(card_name, card_age, card_gender, card_email)
-                $('body').append(card);
+                $('#searchResults').append(card)
+
             }
         },
     });
