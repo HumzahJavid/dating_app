@@ -51,8 +51,8 @@ def test_index_gui(driver):
     assert title == "Dating App"
 
 
-# Searching without setting search logic provides error
-def test_search_without_setting_search_logic_display_error_message(driver):
+def test_when_search_without_setting_search_logic__then_display_error_message(driver):
+    """Searching without setting search logic returns error"""
     search_page = SearchPage(driver)
     search_page.load()
     title = driver.title
@@ -66,3 +66,28 @@ def test_search_without_setting_search_logic_display_error_message(driver):
     first_label = driver.find_element(By.TAG_NAME, "label")
     assert first_label.text == "Search logic"
     assert error_message == "Search logic must have a value"
+
+
+def test_when_search_with_default_fields_plus_OR_logic_then_results_returned(driver):
+    """Searching returns some results (setting required search logic to OR, age fields
+    are set by default if unchanged)
+    """
+    search_page = SearchPage(driver)
+    search_page.load()
+
+    logic_element = driver.find_elements(By.CSS_SELECTOR, ".ui.selection.dropdown")[0]
+    logic_element.click()
+    or_element = driver.find_element(
+        By.XPATH, "/html/body/form/div/div[1]/div/div[2]/div[@data-value='or']"
+    )
+    or_element.click()
+
+    search_button = driver.find_element(By.ID, "searchFormButton")
+    search_button.click()
+
+    search_results = driver.find_element(By.ID, "searchResults")
+    number_of_results = len(search_results.find_elements(By.CSS_SELECTOR, ".ui.card"))
+
+    error_message = driver.find_element(By.CSS_SELECTOR, ".ui.error.message").text
+    assert error_message != "Search logic must have a value"
+    assert number_of_results > 0
