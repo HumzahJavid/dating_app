@@ -1,6 +1,5 @@
 import pytest
 from fastapi.testclient import TestClient
-from selenium.webdriver.common.by import By
 
 from dating_app.main import app
 from pages.search import SearchPage
@@ -54,40 +53,23 @@ def test_index_gui(driver):
 def test_when_search_without_setting_search_logic__then_display_error_message(driver):
     """Searching without setting search logic returns error"""
     search_page = SearchPage(driver)
-    search_page.load()
-    title = driver.title
-    print(f"{title}")
 
-    search_button = driver.find_element(By.ID, "searchFormButton")
-    search_button.click()
+    search_page.click_search_button()
 
-    error_message = driver.find_element(By.CSS_SELECTOR, ".ui.error.message").text
-    assert title == "Dating App"
-    first_label = driver.find_element(By.TAG_NAME, "label")
-    assert first_label.text == "Search logic"
-    assert error_message == "Search logic must have a value"
+    assert search_page.get_title() == "Dating App"
+    assert search_page.get_error_message_text() == "Search logic must have a value"
 
 
-def test_when_search_with_default_fields_plus_OR_logic_then_results_returned(driver):
+def test_when_search_with_default_fields_using_or_logic_then_results_returned(driver):
     """Searching returns some results (setting required search logic to OR, age fields
     are set by default if unchanged)
     """
     search_page = SearchPage(driver)
-    search_page.load()
 
-    logic_element = driver.find_elements(By.CSS_SELECTOR, ".ui.selection.dropdown")[0]
-    logic_element.click()
-    or_element = driver.find_element(
-        By.XPATH, "/html/body/form/div/div[1]/div/div[2]/div[@data-value='or']"
-    )
-    or_element.click()
+    search_page.select_search_logic_type("or")
+    search_page.click_search_button()
+    number_of_results = search_page.get_search_results_count()
+    error_message = search_page.get_error_message_text()
 
-    search_button = driver.find_element(By.ID, "searchFormButton")
-    search_button.click()
-
-    search_results = driver.find_element(By.ID, "searchResults")
-    number_of_results = len(search_results.find_elements(By.CSS_SELECTOR, ".ui.card"))
-
-    error_message = driver.find_element(By.CSS_SELECTOR, ".ui.error.message").text
     assert error_message != "Search logic must have a value"
     assert number_of_results > 0
