@@ -1,18 +1,8 @@
+"""
+Tests the selenium framework is running
+"""
+
 import pytest
-from fastapi.testclient import TestClient
-
-from dating_app.main import app
-
-
-@pytest.fixture
-def client():
-    """Creates a stateless FastAPI test_client
-
-    :yields: A FastAPI Test Client
-    """
-
-    with TestClient(app) as client:
-        yield client
 
 
 @pytest.fixture
@@ -40,16 +30,15 @@ def driver():
     driver.quit()
 
 
-def test_google_title(driver):
+def test_selenium_via_google(driver):
     driver.get("https://google.com")
     title = driver.title
     print(f"{title}")
     assert title == "Google"
 
 
-# test fastapi w/o testclient
-def test_index_gui(driver):
-
+# test selenium can connect to fastapi server
+def test_server_correctly_serves_page(driver):
     driver.get("http://127.0.0.1:8001")
     title = driver.title
     print(f"{title}")
