@@ -19,11 +19,6 @@ def client():
         yield client
 
 
-def test_add():
-    example = 32 + 32
-    assert example == 64
-
-
 def test_root_webpage_served_correctly(client):
     """
     Test if server serves root webpage
