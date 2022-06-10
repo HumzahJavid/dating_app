@@ -1,4 +1,6 @@
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
 
 
 class IndexPage:
@@ -35,6 +37,13 @@ class IndexPage:
         pass_field.send_keys(password)
 
     def get_toast_text(self):
-        # add timer here to prevent no such element exception
+        WebDriverWait(self._driver, 1).until(
+            EC.visibility_of_element_located((By.CLASS_NAME, "toast-container"))
+        )
         toast = self._driver.find_element(By.CLASS_NAME, "toast-container")
         return toast.find_element(By.CLASS_NAME, "content").text
+
+    def login_test_user(self, test_user):
+        self.click_login_button()
+        self.enter_test_username_and_password(test_user["email"], test_user["password"])
+        self.click_login_form_button()
